@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>本文 手書き Program 6</title>
+<meta name="theme-color" content="#A7E1F8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="本文 手書き">
+<meta name="robots" content="noindex,nofollow">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<style>
+:root{
+  --sky:#A7E1F8; --sky2:#E3F6FD; --ink:#1D2B45; --muted:#4F6380;
+  --panel:#FFFFFF; --edge:#1D2B45; --gold:#FFC83D; --gold-edge:#A86F00;
+  --ok:#23994A; --ng:#D93B40; --blue:#2F77B5; --pale:#EEF6FB;
+  --body:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c",system-ui,sans-serif;
+  box-sizing:border-box;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%}
+body{
+  margin:0;min-height:100%;
+  background:linear-gradient(180deg,var(--sky),var(--sky2)) fixed,var(--sky);
+  color:var(--ink);font-family:var(--body);font-weight:500;line-height:1.6;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+}
+main{max-width:1060px;margin:0 auto;padding:14px 16px 40px}
+h1{font-size:26px;margin:6px 0 2px}
+h2{font-size:20px;margin:0 0 6px}
+p{margin:6px 0}
+button{font:inherit;color:inherit;cursor:pointer}
+.sub{color:var(--muted);font-size:15px}
+.panel{background:var(--panel);border:3px solid var(--edge);border-radius:16px;padding:14px 16px;margin:12px 0;box-shadow:0 4px 0 var(--edge)}
+.btn{background:var(--gold);border:3px solid var(--edge);border-radius:14px;padding:10px 20px;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--edge)}
+.btn{white-space:nowrap}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.btn[disabled]{background:#D9DEE6;color:#7A8698;box-shadow:none;cursor:default}
+.btn.plain{background:#fff}
+.btn.ok{background:#BFEBCB}
+.btn.ng{background:#FFD3D0}
+.btn.small{font-size:15px;padding:6px 12px;border-width:2px;box-shadow:0 3px 0 var(--edge);border-radius:11px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grow{flex:1}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.bar{height:12px;background:#DCE7F0;border:2px solid var(--edge);border-radius:8px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--ok)}
+/* stage ladder */
+.stage{display:flex;align-items:center;gap:14px;background:#fff;border:3px solid var(--edge);border-radius:16px;padding:12px 14px;margin:10px 0}
+.stage.now{background:#FFF6D8;box-shadow:0 4px 0 var(--edge)}
+.stage.done{background:#EAF7EE}
+.stage .num{width:46px;height:46px;border-radius:50%;border:3px solid var(--edge);display:grid;place-items:center;font-weight:800;font-size:20px;background:#fff;flex:none}
+.stage.done .num{background:var(--ok);color:#fff}
+.stage .name{font-weight:800;font-size:19px}
+.tag{display:inline-block;background:var(--ng);color:#fff;font-size:13px;font-weight:800;border-radius:8px;padding:0 8px;margin-left:8px;vertical-align:2px}
+/* play */
+.ja{font-size:25px;font-weight:800;line-height:1.5}
+.sp{font-size:14px;color:var(--muted);font-weight:700}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.bank span{background:#DDF1FF;border:2px solid var(--blue);border-radius:10px;padding:2px 12px;font-size:22px;font-weight:700;font-family:system-ui,sans-serif}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 8px}
+.tool{background:#fff;border:2px solid var(--edge);border-radius:11px;padding:6px 12px;font-weight:700;font-size:15px}
+.tool.on{background:var(--edge);color:#fff}
+.sheet{position:relative;background:#FFFEF8;border:3px solid var(--edge);border-radius:14px;overflow:hidden;touch-action:none}
+.sheet canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hint{min-height:28px;font-size:16px;font-weight:700;margin:8px 0}
+.hint.warn{color:var(--ng)}
+.check{background:var(--pale);border-radius:12px;padding:8px 12px;font-size:16px;margin:8px 0}
+.check b{color:var(--ng)}
+.ex{font-family:system-ui,sans-serif;font-size:22px;font-weight:700;padding:2px 10px;border-radius:8px;display:inline-block}
+.ex.good{background:#EAF7EE;border:2px solid var(--ok)}
+.ex.bad{background:#FFECEA;border:2px solid var(--ng)}
+table{border-collapse:collapse;width:100%}
+td,th{border-bottom:1px solid #D5DEE8;padding:6px 6px;text-align:left;vertical-align:top;font-size:15px}
+.thumb{width:300px;max-width:42vw;border:1px solid #C8D3DF;border-radius:6px;background:#FFFEF8;display:block}
+.en{font-family:system-ui,sans-serif;font-weight:700}
+.lvdots{white-space:nowrap;letter-spacing:2px}
+.micbox{background:#FFF6D8;border:3px solid var(--edge);border-radius:14px;padding:10px 14px;margin:8px 0}
+.micbox .say{font-weight:800;font-size:17px;margin:0 0 6px}
+.heard{min-height:24px;font-size:16px;font-weight:700;color:var(--muted);margin:6px 0 0}
+.heard.ok{color:var(--ok)}
+.btn.mic{background:#8ED3FF}
+.btn.mic.on{background:#FF9F9A}
+.link{background:none;border:0;text-decoration:underline;color:var(--muted);font-size:14px;padding:6px}
+.readen{font-family:system-ui,sans-serif;font-size:32px;font-weight:800;line-height:1.4;margin:4px 0}
+.step{font-size:14px;font-weight:800;color:var(--blue)}
+.set{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #D5DEE8}
+.set:last-child{border-bottom:0}
+.pm{display:inline-flex;gap:6px;align-items:center;margin-top:4px}
+.scaf{font-family:system-ui,sans-serif;font-size:24px;font-weight:700;line-height:2.1;margin-top:6px}
+.blank{display:inline-block;border-bottom:3px solid var(--blue);height:1.1em;vertical-align:-.15em;margin:0 1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{border:2px solid var(--ok);background:#E3F5E8;color:#17713A;border-radius:10px;padding:2px 10px;font:700 22px system-ui,sans-serif;text-align:left}
+.chip.bad{border-color:var(--ng);background:#FFD9D6;color:#B3262B}
+.chip small{display:block;font-size:13px;font-weight:700}
+.airead{background:#fff;border:2px dashed var(--muted);border-radius:10px;padding:6px 10px;margin:8px 0;font-size:15px}
+.airead .en{font-size:20px}
+.shot{max-width:100%;max-height:180px;border:2px solid var(--edge);border-radius:10px;display:block;margin:8px 0}
+input.txt{font:inherit;font-size:16px;border:2px solid var(--edge);border-radius:10px;padding:8px;width:100%;margin:4px 0;-webkit-user-select:text;user-select:text}
+img.thumb{height:auto}
+@media (max-width:520px){
+  main{padding:10px 12px 40px}
+  h1{font-size:22px}.ja{font-size:21px}.readen{font-size:25px}
+  .btn{font-size:16px;padding:9px 14px}
+  .stage{gap:10px;padding:10px}.stage .num{width:38px;height:38px;font-size:17px}.stage .name{font-size:17px}
+  .scaf{font-size:21px}.bank span{font-size:19px}.chip{font-size:19px}
+  .thumb{max-width:36vw}
+}
+.steps{background:#fff;border:2px dashed var(--edge);border-radius:12px;padding:8px 12px;font-weight:700;font-size:15px;margin:8px 0}
+.qitem{border-bottom:1px solid #D5DEE8;padding:10px 0}
+.qitem:last-child{border-bottom:0}
+.qno{display:inline-grid;place-items:center;min-width:28px;height:28px;border:2px solid var(--edge);border-radius:7px;font-weight:800;margin-right:6px;padding:0 4px}
+.preview{overflow:auto;background:#fff;border:3px solid var(--edge);border-radius:12px;padding:8px;margin:10px 0}
+/* ---- 印刷するプリント(A4) ---- */
+.sheet-p{break-after:page;page-break-after:always;margin-bottom:6mm;width:186mm;color:#000;background:#fff;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;line-height:1.4;position:relative;padding:5mm 4mm}
+.sheet-p:last-child{break-after:auto;page-break-after:auto;margin-bottom:0}
+.sheet-p .mk{position:absolute;width:7mm;height:7mm;border:1.2mm solid #000}
+.sheet-p .mk.tl{left:0;top:0;border-right:0;border-bottom:0}.sheet-p .mk.tr{right:0;top:0;border-left:0;border-bottom:0}
+.sheet-p .mk.bl{left:0;bottom:0;border-right:0;border-top:0}.sheet-p .mk.br{right:0;bottom:0;border-left:0;border-top:0}
+.sh-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:.6mm solid #000;padding-bottom:1.5mm;font-size:12pt}
+.sh-code{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:12pt}
+.sh-sub{font-size:9.5pt;margin:1.5mm 0 3mm}
+.sh-item{break-inside:avoid;page-break-inside:avoid;padding:2.5mm 0 3.5mm;border-bottom:.2mm solid #999}
+.sh-q{font-size:11.5pt;font-weight:700}
+.sh-no{display:inline-block;min-width:7mm;height:7mm;line-height:6.2mm;text-align:center;border:.5mm solid #000;font-weight:800;font-size:12pt;margin-right:2mm;font-family:system-ui,sans-serif}
+.sh-bank{font-size:11.5pt;margin:1.5mm 0 0 9mm;font-family:system-ui,sans-serif;border:.3mm solid #000;display:inline-block;padding:.5mm 3mm}
+.sh-bank b{font-size:9pt;margin-right:2mm;font-family:inherit}
+.sh-line{display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:4mm;row-gap:4.5mm;margin:4.5mm 0 0 9mm}
+.sl{position:relative;display:inline-block;height:10mm;border-bottom:.5mm solid #000}
+.sl::before{content:"";position:absolute;left:0;right:0;top:4.5mm;border-top:.25mm dashed #888}
+.sl .hn{position:absolute;left:0;top:-4.2mm;font:700 9pt system-ui,sans-serif;color:#666;font-style:normal}
+.pw{font:600 17pt system-ui,sans-serif;line-height:1;padding-bottom:.8mm}
+.sh-free{position:relative;height:10mm;border-bottom:.5mm solid #000;margin:5mm 0 0 9mm}
+.sh-free::before{content:"";position:absolute;left:0;right:0;top:4.5mm;border-top:.25mm dashed #888}
+@page{size:A4;margin:11mm}
+@media print{
+  body{background:#fff!important;padding:0}
+  main{max-width:none;padding:0;margin:0}
+  .noprint{display:none!important}
+  .preview{border:0;padding:0;margin:0;overflow:visible}
+}
+.pm button{width:34px;height:34px;border-radius:9px;border:2px solid var(--edge);background:#fff;font-weight:800;font-size:18px;line-height:1}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* ================= データ(本文JUMPと同じ文) ================= */
+const T=(sp,en,ja)=>({sp,en,ja});
+const PROGRAM={id:6,title:"The Way to School",parts:[
+ {id:"6-1",name:"Part 1",pages:"p.75",items:[
+  T("Anya","Look at this boy.","この男の子を見て。"),
+  T("Ken","Who is he?","彼はだれ?"),
+  T("Anya","He's Jackson. He lives in Kenya.","彼はジャクソン。ケニアに住んでいるの。"),
+  T("Anya","I respect him.","私は彼を尊敬しているの。"),
+  T("Ken","Tell me about him.","彼のことを教えて。"),
+  T("Anya","Every morning he runs and walks 15 kilometers to school.","毎朝、彼は学校まで15キロを走ったり歩いたりするの。"),
+  T("Anya","It takes two hours.","2時間かかるのよ。"),
+  T("Ken","Wow!","わあ!"),
+  T("Anya","He goes to school with his sister.","彼はお姉さん[妹]といっしょに学校に行くの。"),
+  T("Anya","He walks across the savanna with her.","彼は彼女といっしょにサバンナを歩いて横切るの。"),
+  T("Ken","That's tough.","それはたいへんだね。")]},
+ {id:"6-2",name:"Part 2",pages:"p.76",items:[
+  T("Ken","The savanna is amazing.","サバンナはすごいね。"),
+  T("Anya","It's a dangerous place too, you know.","危険な場所でもあるのよ。"),
+  T("Ken","Why is it dangerous?","どうして危険なの?"),
+  T("Anya","Because elephants sometimes attack schoolchildren.","ゾウがときどき通学中の子どもたちをおそうからよ。"),
+  T("Ken","No way! Are Jackson and his sister safe?","まさか! ジャクソンとお姉さん[妹]は無事なの?"),
+  T("Anya","No. Their parents pray for their safety.","ううん。両親は2人の無事を祈っているの。"),
+  T("Ken","Well then, why does Jackson go to school?","それじゃあ、どうしてジャクソンは学校に行くの?"),
+  T("Anya","Because he has a dream.","夢があるからよ。"),
+  T("Ken","What's his dream?","彼の夢は何?"),
+  T("Anya","The hint is \"airplane.\" Think about it.","ヒントは「飛行機」。考えてみて。")]}
+]};
+/* 新出語(先に空らんにする) */
+const VOCAB=new Set(("respect tell hour hours across savanna tough kenya every morning kilometer kilometers run runs walk walks take takes "+
+ "amazing dangerous attack schoolchildren safe parent parents pray safety has what's airplane way dream sometimes elephants because").split(" "));
+/* あとから空らんにする語 */
+const FUNC=new Set("a an the is are am he she it i you we they me him her his their my your to at in on of for with and too this that do does no".split(" "));
+
+const STAGES={
+ 1:{name:"語群を見て書く",sub:"バラバラの語群を見ながら、正しい順に文を書く"},
+ 2:{name:"虫食い(少し)",sub:"空らんの単語だけ書く"},
+ 3:{name:"虫食い(たくさん)",sub:"空らんがふえる"},
+ 4:{name:"頭文字だけ",sub:"各単語の最初の1文字をヒントに、文を全部書く"},
+ 5:{name:"何も見ないで書く",sub:"日本語だけを見て、文を全部書く"}
+};
+const MAXST=5;
+
+/* ================= 保存 ================= */
+const KEY="honbun-tegaki-p6-v1";
+let save={lv:{},miss:{},ink:{},read:{},log:[],finger:false,micRequired:false,sound:true,mode:"print",aiUrl:"",aiPass:"",sheets:{},shots:[]};
+try{const r=localStorage.getItem(KEY); if(r) save=Object.assign(save,JSON.parse(r));}catch(e){}
+function persist(){
+  try{localStorage.setItem(KEY,JSON.stringify(save));}
+  catch(e){ try{save.ink={};save.shots=[];localStorage.setItem(KEY,JSON.stringify(save));}catch(e2){} }
+}
+const sid=(part,i)=>part.id+":"+i;
+const lvOf=id=>save.lv[id]||1;
+
+/* ================= 小道具 ================= */
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const wkey=t=>t.toLowerCase().replace(/[^a-z0-9']/g,"");
+const tokens=en=>en.split(" ");
+
+let actx=null;
+function beep(kind){
+  if(!save.sound)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const seq=kind==="ok"?[[660,0],[880,.09],[1320,.18]]:kind==="ng"?[[300,0],[220,.12]]:[[520,0]];
+    seq.forEach(([f,t])=>{
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type=kind==="ng"?"sawtooth":"square";o.frequency.value=f;
+      g.gain.setValueAtTime(.07,actx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+t+.14);
+      o.connect(g).connect(actx.destination);o.start(actx.currentTime+t);o.stop(actx.currentTime+t+.15);
+    });
+  }catch(e){}
+}
+function speak(en,onEnd){
+  let done=false;const fin=()=>{if(!done){done=true;onEnd&&onEnd();}};
+  try{
+    if(!("speechSynthesis" in window)){fin();return;}
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(en.replace(/"/g,"").replace(/-/g," "));
+    u.lang="en-US";u.rate=.85;
+    const v=speechSynthesis.getVoices().filter(v=>/^en(-|_)US/i.test(v.lang));
+    const pick=v.find(x=>/Samantha|Google US English|Aria|Jenny|Ava/i.test(x.name))||v[0];if(pick)u.voice=pick;
+    u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);
+    setTimeout(fin,en.split(" ").length*700+2500);
+  }catch(e){fin();}
+}
+if("speechSynthesis" in window){try{speechSynthesis.getVoices();}catch(e){}}
+
+/* ================= 音読(声が出ていれば合格。発音の正誤は判定しない) ================= */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let micBlocked=false;
+function listen(onRes,onErr){
+  const r=new SR();r.lang="en-US";r.interimResults=false;let done=false;
+  r.onresult=e=>{done=true;onRes(e.results[0][0].transcript||"");};
+  r.onerror=e=>{done=true;onErr(e.error);};
+  r.onend=()=>{if(!done)onErr("no-speech");};
+  try{speechSynthesis.cancel();r.start();}catch(e){onErr("start");}
+  return r;
+}
+/* host に音読の箱を出す。声が聞こえたら onDone */
+function micGate(host,text,onDone){
+  const strict=save.micRequired;let passed=false;
+  const pass=()=>{if(passed)return;passed=true;onDone();};
+  function draw(){
+    const useMic=SR&&!micBlocked;
+    host.innerHTML=`<div class="micbox">
+      <p class="say">${useMic?"🎤 をおして、英文を声に出して読もう。":"英文を声に出して1回読もう。"}</p>
+      <div class="row"><button class="btn plain small" id="again">🔊 お手本を聞く</button>
+       ${useMic?'<button class="btn mic small" id="mic">🎤 読む</button>':strict?"":'<button class="btn small" id="self" disabled></button>'}
+       ${useMic&&!strict?'<button class="link" id="skip">マイクを使わずに進む</button>':""}</div>
+      <p class="heard" id="heard" aria-live="polite"></p></div>`;
+    const heard=host.querySelector("#heard");
+    host.querySelector("#again").onclick=()=>speak(text);
+    if(!useMic&&strict){heard.textContent="この画面ではマイクが使えないので先へ進めません。おうちの人に「マイク必須」をオフにしてもらってね。";return;}
+    if(!useMic){
+      const b=host.querySelector("#self");let left=Math.max(2,Math.ceil(text.split(" ").length*.6));
+      b.textContent=`声に出して読んでね…${left}`;
+      const t=setInterval(()=>{left--;if(!document.body.contains(b)){clearInterval(t);return;}
+        if(left>0)b.textContent=`声に出して読んでね…${left}`;
+        else{clearInterval(t);b.disabled=false;b.textContent="読めた!";b.onclick=()=>{b.disabled=true;heard.className="heard ok";heard.textContent="OK!";pass();};}},1000);
+      return;
+    }
+    if(!strict)host.querySelector("#skip").onclick=pass;
+    const mic=host.querySelector("#mic");let rec=null;
+    mic.onclick=()=>{
+      if(rec||passed)return;mic.classList.add("on");mic.textContent="聞いてるよ…";
+      rec=listen(said=>{
+        rec=null;mic.classList.remove("on");
+        if(said.trim()){heard.className="heard ok";heard.textContent="声が聞こえたよ：「"+said+"」";mic.textContent="🎤 OK!";mic.disabled=true;beep("ok");pass();}
+        else{heard.className="heard";heard.textContent="声が聞こえなかったよ。ボタンをおしてから読んでね。";mic.textContent="🎤 もう一度";}
+      },err=>{
+        rec=null;mic.classList.remove("on");
+        if(["not-allowed","service-not-allowed","start","audio-capture","network"].includes(err)){micBlocked=true;draw();}
+        else{heard.className="heard";heard.textContent="声が聞こえなかったよ。ボタンをおしてから読んでね。";mic.textContent="🎤 もう一度";}
+      });
+    };
+  }
+  draw();
+}
+
+/* ================= 空らんの決め方 ================= */
+function blankSet(id,en,stage){
+  const tk=tokens(en),n=tk.length;
+  if(stage===1||stage>=4) return new Set(tk.map((_,i)=>i));
+  const miss=save.miss[id]||{};
+  const rank=tk.map((t,i)=>{
+    const k=wkey(t);
+    return {i,score:(miss[k]||0)*100+(VOCAB.has(k)?20:0)-(FUNC.has(k)?20:0)+k.length};
+  }).sort((a,b)=>b.score-a.score||a.i-b.i);
+  let few=Math.max(1,Math.round(n*.3));
+  let many=Math.min(n,Math.max(few+1,Math.round(n*.65)));
+  const cnt=stage===2?few:many;
+  return new Set(rank.slice(0,cnt).map(r=>r.i));
+}
+
+/* ================= 用紙のレイアウト(論理座標 幅900) ================= */
+const W=900,MX=30,CH=25,PAD=16,GAP=24,Y0=92,PITCH=138;
+function layout(en){
+  const tk=tokens(en);let x=MX,line=0;const slots=[];
+  tk.forEach((t,i)=>{
+    const w=Math.max(70,t.length*CH+PAD);
+    if(x+w>W-MX&&x>MX){line++;x=MX;}
+    slots.push({i,t,x,y:Y0+line*PITCH,w});
+    x+=w+GAP;
+  });
+  return {slots,lines:line+1};
+}
+function sheetHeight(lay,stage){
+  const lines=stage===5?lay.lines+1:lay.lines;
+  return Y0+(lines-1)*PITCH+62;
+}
+const FONT='system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif';
+/* 背景(下線・印刷された単語・お手本) */
+function drawBg(ctx,lay,stage,blanks,revealed,wrong){
+  const H=sheetHeight(lay,stage);
+  ctx.clearRect(0,0,W,H);
+  ctx.textBaseline="alphabetic";
+  if(stage===5){
+    const lines=lay.lines+1;
+    for(let l=0;l<lines;l++){
+      const y=Y0+l*PITCH;
+      ctx.strokeStyle="#C9D6E2";ctx.lineWidth=1.5;ctx.setLineDash([6,7]);
+      ctx.beginPath();ctx.moveTo(MX,y-34);ctx.lineTo(W-MX,y-34);ctx.stroke();
+      ctx.setLineDash([]);ctx.strokeStyle="#7B8CA3";ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(MX,y);ctx.lineTo(W-MX,y);ctx.stroke();
+    }
+  }
+  lay.slots.forEach(s=>{
+    const blank=blanks.has(s.i);
+    if(stage!==5){
+      if(blank){
+        ctx.strokeStyle="#C9D6E2";ctx.lineWidth=1.5;ctx.setLineDash([6,7]);
+        ctx.beginPath();ctx.moveTo(s.x,s.y-34);ctx.lineTo(s.x+s.w,s.y-34);ctx.stroke();
+        ctx.setLineDash([]);ctx.strokeStyle="#2F77B5";ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x+s.w,s.y);ctx.stroke();
+        if(stage===4){
+          ctx.fillStyle="#2F77B5";ctx.font="700 22px "+FONT;
+          ctx.fillText(s.t.replace(/^"/,"")[0],s.x+2,s.y-64);
+        }
+      }else{
+        ctx.fillStyle="#1D2B45";ctx.font="600 38px "+FONT;
+        ctx.fillText(s.t,s.x+4,s.y-4);
+      }
+    }
+    if(revealed&&blank){
+      const bad=wrong.has(s.i);
+      ctx.font="700 25px "+FONT;
+      const tw=Math.max(ctx.measureText(s.t).width+14,44);
+      ctx.fillStyle=bad?"#FFD9D6":"#E3F5E8";
+      ctx.strokeStyle=bad?"#D93B40":"#23994A";ctx.lineWidth=2;
+      roundRect(ctx,s.x-2,s.y+9,tw,34,8);ctx.fill();ctx.stroke();
+      ctx.fillStyle=bad?"#B3262B":"#17713A";
+      ctx.fillText(s.t,s.x+5,s.y+35);
+    }
+  });
+}
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function drawStrokes(ctx,strokes){
+  ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#16213A";ctx.fillStyle="#16213A";
+  strokes.forEach(st=>drawStroke(ctx,st,0));
+}
+function drawStroke(ctx,st,from){
+  if(st.length===1){ctx.beginPath();ctx.arc(st[0][0],st[0][1],st[0][2]/2,0,7);ctx.fill();return;}
+  for(let i=Math.max(1,from);i<st.length;i++){
+    ctx.lineWidth=(st[i-1][2]+st[i][2])/2;
+    ctx.beginPath();ctx.moveTo(st[i-1][0],st[i-1][1]);ctx.lineTo(st[i][0],st[i][1]);ctx.stroke();
+  }
+}
+
+/* ================= 画面:ホーム ================= */
+function partStat(part){
+  const n=part.items.length;let clear=0,steps=0;
+  part.items.forEach((_,i)=>{const l=lvOf(sid(part,i));if(l>MAXST)clear++;steps+=l-1;});
+  return {n,clear,pct:Math.round(steps/(n*MAXST)*100)};
+}
+function home(){
+  app.innerHTML=`
+  <h1>本文 手書き</h1>
+  <p class="sub">Program ${PROGRAM.id} ${esc(PROGRAM.title)} ／ 音読してから、日本語を見て英文を${{print:"プリントに",paper:"ノートに",screen:"画面に"}[save.mode]}書く</p>
+  ${PROGRAM.parts.map((p,pi)=>{const s=partStat(p);return `
+   <div class="panel">
+    <div class="row"><h2 class="grow">${p.name} <span class="sub">${p.pages}・${s.n}文</span></h2>
+     <button class="btn" data-part="${pi}">${s.clear===s.n?"もう一度":"はじめる"}</button></div>
+    <div class="bar"><i style="width:${s.pct}%"></i></div>
+    <p class="sub">何も見ないで書けた文 ${s.clear} / ${s.n}</p>
+   </div>`;}).join("")}
+  <div class="panel">
+   <h2>書き方のいい例・わるい例</h2>
+   <p><span class="ex good">He goes to school.</span>　○ 大文字ではじめる・単語の間をあける・ピリオド</p>
+   <p><span class="ex bad">hegoes to schol</span>　× 小文字ではじまる・間がない・つづりちがい・ピリオドなし</p>
+   <p class="sub">答え合わせでは、この4つ(つづり・単語の間・大文字・ピリオドや ? )を自分でたしかめる。</p>
+  </div>
+  <div class="row"><button class="btn plain small" id="rec">保護者モード(2秒長押し)</button></div>`;
+  app.querySelectorAll("[data-part]").forEach(b=>b.onclick=()=>partScreen(PROGRAM.parts[+b.dataset.part]));
+  { const b=$("#rec");let t=null;
+    const down=e=>{e.preventDefault();b.textContent="そのまま押し続けて…";t=setTimeout(()=>{t=null;beep("ok");parent();},2000);};
+    const up=()=>{if(t){clearTimeout(t);t=null;b.textContent="保護者モード(2秒長押し)";}};
+    b.addEventListener("pointerdown",down);["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,up));
+    b.addEventListener("contextmenu",e=>e.preventDefault()); }
+  window.scrollTo(0,0);
+}
+
+/* ================= 画面:Part(5つの段階) ================= */
+function partScreen(part){
+  const counts={};for(let s=1;s<=MAXST;s++)counts[s]=0;
+  let clear=0;
+  part.items.forEach((_,i)=>{const l=lvOf(sid(part,i));if(l>MAXST)clear++;else counts[l]++;});
+  const n=part.items.length;
+  const unread=part.items.map((_,i)=>i).filter(i=>!save.read[sid(part,i)]);
+  let now=-1;if(unread.length)now=0;else for(let s=1;s<=MAXST;s++){if(counts[s]){now=s;break;}}
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="back">← もどる</button>
+   <h1 class="grow">${part.name} <span class="sub">${part.pages}</span></h1></div>
+  <p class="sub">上から順に進む。まちがえた文は 1つ前の段階にもどるだけ(最初からにはならない)。</p>
+  ${save.mode==="print"?`<div class="steps">書く段階の進め方：① 🖨 プリントを作って印刷 → ② 鉛筆で書く → ③ ${save.aiUrl?"📷 撮って採点":"答え合わせ"}</div>`:""}
+  <div class="stage ${now===0?"now":""} ${unread.length?"":"done"}">
+    <div class="num">${unread.length?"♪":"✓"}</div>
+    <div class="grow"><div class="name">本文音読${now===0?'<span class="tag">つぎはここ</span>':""}</div>
+     <div class="sub">お手本を聞いて、1文ずつ声に出して読む</div>
+     <div class="sub">音読した文 ${n-unread.length} / ${n}</div></div>
+    <button class="btn ${unread.length?"":"plain"}" id="readgo">${unread.length?`あと ${unread.length} 文`:"もう一度"}</button>
+  </div>
+  ${[1,2,3,4,5].map(s=>{
+    const c=counts[s],passed=part.items.filter((_,i)=>lvOf(sid(part,i))>s).length;
+    const done=passed===n;
+    return `<div class="stage ${s===now?"now":""} ${done?"done":""}">
+      <div class="num">${done?"✓":s}</div>
+      <div class="grow"><div class="name">${STAGES[s].name}${s===now?'<span class="tag">つぎはここ</span>':""}</div>
+       <div class="sub">${save.mode==="paper"&&(s===2||s===3)?(s===2?"空らんをうめながら、文を全部書く":"空らんがふえる。文を全部書く"):STAGES[s].sub}</div>
+       <div class="sub">この段階をこえた文 ${passed} / ${n}${save.mode==="print"&&c?`　<b>あと ${c} 文</b>`:""}</div>
+       ${save.mode==="print"&&(c||save.sheets[part.id+":"+s])?`<div class="row" style="margin-top:6px">
+         <button class="btn small plain" data-print="${s}">🖨 プリントを作る</button>
+         <button class="btn small" data-grade="${s}" ${save.sheets[part.id+":"+s]?"":"disabled"}>${save.aiUrl?"📷 撮って採点":"答え合わせ"}</button></div>`:""}</div>
+      ${save.mode!=="print"&&c?`<button class="btn" data-st="${s}">あと ${c} 文</button>`:""}
+     </div>`;}).join("")}
+  ${clear===n?`<div class="panel"><h2>ぜんぶ書けた!</h2>
+    <p>${part.name} の ${n} 文を、何も見ないで書けた。</p>
+    <button class="btn" id="review">全文をもう一度(何も見ないで)</button></div>`:""}`;
+  $("#back").onclick=home;
+  $("#readgo").onclick=()=>startRead(part,unread.length?unread:part.items.map((_,i)=>i));
+  app.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{
+    const st=+b.dataset.st;
+    startRun(part,st,part.items.map((_,i)=>i).filter(i=>lvOf(sid(part,i))===st));
+  });
+  if($("#review")) $("#review").onclick=()=>{const all=part.items.map((_,i)=>i);
+    save.mode==="print"?printSheet(part,5,makeSheet(part,5,all)):startRun(part,5,all);};
+  app.querySelectorAll("[data-print]").forEach(b=>b.onclick=()=>{
+    const st=+b.dataset.print,q=part.items.map((_,i)=>i).filter(i=>lvOf(sid(part,i))===st);
+    const old=save.sheets[part.id+":"+st];
+    printSheet(part,st,q.length?makeSheet(part,st,q):old);});
+  app.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>gradeSheet(part,+b.dataset.grade));
+  window.scrollTo(0,0);
+}
+
+/* ================= 画面:本文音読 ================= */
+function startRead(part,queue){ beep("tap"); readItem(part,queue,0); }
+function readItem(part,queue,pos){
+  if(pos>=queue.length){
+    app.innerHTML=`<div class="panel"><h2>本文音読　おわり</h2>
+      <p style="font-size:22px;font-weight:800">${queue.length} 文を声に出して読んだ。</p>
+      <button class="btn" id="go">つづける</button></div>`;
+    $("#go").onclick=()=>partScreen(part);window.scrollTo(0,0);return;
+  }
+  const idx=queue[pos],item=part.items[idx],id=sid(part,idx);
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="quit">← やめる</button>
+   <div class="grow"><b>本文音読</b>　<span class="sub">${part.name}　${pos+1} / ${queue.length} 文</span>
+    <div class="bar"><i style="width:${pos/queue.length*100}%"></i></div></div></div>
+  <div class="panel">
+   <div class="sp">${esc(item.sp)}</div>
+   <div class="readen">${esc(item.en)}</div>
+   <div class="ja" style="font-size:20px;color:var(--muted)">${esc(item.ja)}</div>
+  </div>
+  <div class="step" id="step">① まずお手本を聞こう</div>
+  <div class="row" style="margin:8px 0"><button class="btn" id="model">🔊 お手本を聞く</button></div>
+  <div id="gate"></div>
+  <div class="row"><span class="grow"></span><button class="btn ok" id="nextbtn" disabled>つぎへ</button></div>`;
+  const stop=()=>{try{speechSynthesis.cancel();}catch(e){}};
+  $("#quit").onclick=()=>{stop();partScreen(part);};
+  let opened=false;
+  $("#model").onclick=()=>{
+    const b=$("#model");b.textContent="🔊 再生中…";
+    speak(item.en,()=>{
+      if(!document.body.contains(b))return;
+      b.textContent="🔊 もう一度";b.className="btn plain";
+      if(opened)return;opened=true;
+      $("#step").textContent="② つぎは自分の番。声に出して読もう";
+      micGate($("#gate"),item.en,()=>{$("#nextbtn").disabled=false;});
+    });
+  };
+  $("#nextbtn").onclick=()=>{
+    stop();save.read[id]=true;save.log.push({t:Date.now(),id,stage:0,ok:true,words:[]});persist();beep("tap");
+    readItem(part,queue,pos+1);
+  };
+  window.scrollTo(0,0);
+}
+
+/* ================= 画面:書く ================= */
+let run=null;
+function startRun(part,stage,queue){ run={part,stage,queue,pos:0,ok:0,ng:0}; beep("tap"); question(); }
+
+function question(){
+  if(save.mode==="paper")return paperQuestion();
+  const {part,stage,queue,pos}=run;
+  const idx=queue[pos],item=part.items[idx],id=sid(part,idx);
+  const lay=layout(item.en),blanks=blankSet(id,item.en,stage),H=sheetHeight(lay,stage);
+  let strokes=[],hist=[],tool="pen",revealed=false,wrong=new Set(),cur=null,penSeen=false,readDone=false;
+
+  const bank=stage===1?`<div class="bank">${shuffle(tokens(item.en).map(t=>t.replace(/[.,!?"]/g,""))).map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:"";
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="quit">← やめる</button>
+   <div class="grow"><b>${stage}. ${STAGES[stage].name}</b>　<span class="sub">${part.name}　${pos+1} / ${queue.length} 文</span>
+    <div class="bar"><i style="width:${pos/queue.length*100}%"></i></div></div></div>
+  <div class="panel" style="margin-bottom:8px">
+   <div class="sp">${esc(item.sp)}</div>
+   <div class="ja">${esc(item.ja)}</div>
+   ${bank}
+  </div>
+  <div class="tools" id="tools">
+   <button class="tool on" data-tool="pen">✏️ ペン</button>
+   <button class="tool" data-tool="erase">消しゴム</button>
+   <button class="tool" id="undo">↩ 1つもどす</button>
+   <button class="tool" id="clear">ぜんぶ消す</button>
+  </div>
+  <div class="sheet" id="sheet" style="aspect-ratio:${W}/${H}"><canvas id="bg"></canvas><canvas id="ink"></canvas></div>
+  <div class="hint" id="hint">${stage===2||stage===3?"青い線のところに単語を書こう。":"青い線の上に書こう。"}</div>
+  <div id="after"></div>
+  <div class="row" id="actions"><span class="grow"></span><button class="btn" id="checkbtn" disabled>答え合わせ</button></div>`;
+  if(stage===5) $("#hint").textContent="線の上に、文を全部書こう。";
+
+  const sheet=$("#sheet"),bg=$("#bg"),ink=$("#ink");
+  const bctx=bg.getContext("2d"),ictx=ink.getContext("2d");
+  function fit(){
+    const r=sheet.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    [bg,ink].forEach(c=>{c.width=Math.round(r.width*dpr);c.height=Math.round(r.width*H/W*dpr);});
+    const k=bg.width/W;
+    bctx.setTransform(k,0,0,k,0,0);ictx.setTransform(k,0,0,k,0,0);
+    redraw();
+  }
+  function redrawBg(){drawBg(bctx,lay,stage,blanks,revealed,wrong);}
+  function redrawInk(){ictx.clearRect(0,0,W,H);drawStrokes(ictx,strokes);}
+  function redraw(){redrawBg();redrawInk();}
+  function refreshBtn(){ if(!revealed) $("#checkbtn").disabled=strokes.length===0; }
+  const pt=e=>{const r=ink.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*W/r.width];};
+  const widthOf=e=>e.pointerType==="pen"?2.6+(e.pressure||.4)*4.2:4.2;
+  const accept=e=>e.pointerType==="pen"||e.pointerType==="mouse"||save.finger;
+  function eraseAt(p){
+    const R=16;let hit=false;
+    const keep=strokes.filter(st=>{const h=st.some(q=>Math.abs(q[0]-p[0])<R&&Math.abs(q[1]-p[1])<R);if(h)hit=true;return !h;});
+    if(hit){strokes=keep;redrawInk();}
+  }
+  ink.addEventListener("pointerdown",e=>{
+    e.preventDefault();
+    if(revealed){toggleWrong(pt(e));return;}
+    if(e.pointerType==="pen")penSeen=true;
+    if(!accept(e)){ if(!penSeen){const h=$("#hint");h.textContent="Apple Pencil で書こう。(指で書く設定は保護者モードにあります)";h.className="hint warn";} return; }
+    try{ink.setPointerCapture(e.pointerId);}catch(_){}
+    hist.push(strokes.slice());if(hist.length>60)hist.shift();
+    const p=pt(e);
+    if(tool==="erase"){cur={erase:true,id:e.pointerId};eraseAt(p);}
+    else{const st=[[Math.round(p[0]*10)/10,Math.round(p[1]*10)/10,widthOf(e)]];strokes.push(st);cur={st,id:e.pointerId};drawStroke(ictx,st,0);}
+  });
+  ink.addEventListener("pointermove",e=>{
+    if(!cur||e.pointerId!==cur.id)return;
+    e.preventDefault();
+    const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e];
+    (evs.length?evs:[e]).forEach(ev=>{
+      const p=pt(ev);
+      if(cur.erase){eraseAt(p);return;}
+      const st=cur.st,last=st[st.length-1];
+      if(Math.abs(p[0]-last[0])+Math.abs(p[1]-last[1])<.8)return;
+      st.push([Math.round(p[0]*10)/10,Math.round(p[1]*10)/10,Math.round(widthOf(ev)*10)/10]);
+      ictx.lineCap="round";ictx.strokeStyle="#16213A";
+      drawStroke(ictx,st,st.length-1);
+    });
+  });
+  const end=e=>{ if(cur&&e.pointerId===cur.id){cur=null;refreshBtn();} };
+  ink.addEventListener("pointerup",end);ink.addEventListener("pointercancel",end);
+  sheet.addEventListener("touchstart",e=>e.preventDefault(),{passive:false});
+  sheet.addEventListener("touchmove",e=>e.preventDefault(),{passive:false});
+
+  app.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
+    tool=b.dataset.tool;app.querySelectorAll("[data-tool]").forEach(x=>x.classList.toggle("on",x===b));
+  });
+  $("#undo").onclick=()=>{if(hist.length){strokes=hist.pop();redrawInk();refreshBtn();}};
+  $("#clear").onclick=()=>{if(strokes.length){hist.push(strokes.slice());strokes=[];redrawInk();refreshBtn();}};
+  $("#quit").onclick=()=>{window.removeEventListener("resize",fit);try{speechSynthesis.cancel();}catch(e){}partScreen(part);};
+
+  function toggleWrong(p){
+    const s=lay.slots.find(s=>blanks.has(s.i)&&p[0]>=s.x-10&&p[0]<=s.x+s.w+10&&p[1]>=s.y-80&&p[1]<=s.y+50);
+    if(!s)return;
+    wrong.has(s.i)?wrong.delete(s.i):wrong.add(s.i);
+    beep("tap");redrawBg();nextLabel();
+  }
+  function nextLabel(){
+    const b=$("#nextbtn");if(!b)return;
+    if(wrong.size){b.textContent=`まちがい ${wrong.size} こ → つぎへ`;b.className="btn ng";}
+    else{b.textContent="ぜんぶ合っていた → つぎへ";b.className="btn ok";}
+  }
+  $("#checkbtn").onclick=()=>{
+    revealed=true;cur=null;
+    $("#tools").style.display="none";
+    redrawBg();speak(item.en);
+    $("#hint").className="hint";
+    $("#hint").textContent="緑のお手本と、自分の字を1語ずつくらべよう。";
+    $("#after").innerHTML=`<div class="check">たしかめる4つ：<b>つづり</b>・<b>単語の間</b>・<b>大文字</b>・<b>ピリオドや ?</b><br>
+      ちがっていた単語は、<b>その単語をタップ</b>して赤にする。</div><div id="gate"></div>`;
+    $("#actions").innerHTML=`<span class="sub" id="needread">声に出して読むと、つぎへ進める。</span><span class="grow"></span><button class="btn ok" id="nextbtn" disabled></button>`;
+    nextLabel();
+    $("#nextbtn").onclick=finish;
+    micGate($("#gate"),item.en,()=>{readDone=true;const n=$("#needread");if(n)n.textContent="";$("#nextbtn").disabled=false;});
+  };
+  function finish(){
+    if(!readDone)return;
+    try{speechSynthesis.cancel();}catch(e){}
+    const ok=wrong.size===0;
+    const words=[...wrong].map(i=>lay.slots[i].t);
+    if(!ok){const m=save.miss[id]=save.miss[id]||{};words.forEach(t=>{const k=wkey(t);m[k]=(m[k]||0)+1;});}
+    save.lv[id]=ok?Math.max(lvOf(id),stage+1):Math.max(1,stage-1);
+    save.ink[id]={stage,strokes,blanks:[...blanks],wrong:[...wrong],t:Date.now()};
+    save.log.push({t:Date.now(),id,stage,ok,words});if(save.log.length>600)save.log.splice(0,save.log.length-600);
+    persist();
+    ok?run.ok++:run.ng++;beep(ok?"ok":"ng");
+    window.removeEventListener("resize",fit);
+    run.pos++;
+    run.pos<run.queue.length?question():result();
+  }
+  window.addEventListener("resize",fit);
+  fit();window.scrollTo(0,0);
+}
+
+/* ================= ノートに書く(紙)＋写真でAI採点 ================= */
+const letters=t=>t.toLowerCase().replace(/[^a-z0-9]/g,"");
+function lev(a,b){const d=[];for(let j=0;j<=b.length;j++)d[j]=j;
+  for(let i=1;i<=a.length;i++){let prev=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const tmp=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));prev=tmp;}}
+  return d[b.length];}
+function sim(a,b){a=letters(a);b=letters(b);if(!a.length&&!b.length)return 1;return 1-lev(a,b)/Math.max(a.length,b.length);}
+/* お手本の単語列 model と、書いた単語列 written をつき合わせる */
+function alignTokens(model,written){
+  const mk=model.map(letters),w=[];
+  written.forEach(t=>{
+    const k=letters(t);let hit=false;
+    if(k&&!mk.includes(k)){
+      for(let i=0;i<mk.length&&!hit;i++){let c="";
+        for(let j=i;j<Math.min(mk.length,i+4);j++){c+=mk[j];
+          if(j>i&&c===k){for(let x=i;x<=j;x++)w.push({t,k:mk[x],joined:true});hit=true;break;}}}
+    }
+    if(!hit)w.push({t,k});
+  });
+  const n=model.length,m=w.length;
+  const cost=(i,j)=>{const a=model[i],b=w[j];
+    if(b.joined)return b.k===mk[i]?.6:1.8;
+    if(a===b.t)return 0;
+    if(mk[i]===b.k)return .6;
+    return sim(a,b.t)>=.5?1:1.8;};
+  const D=[],B=[];
+  for(let i=0;i<=n;i++){D[i]=[];B[i]=[];for(let j=0;j<=m;j++){
+    if(!i&&!j){D[i][j]=0;continue;}
+    let best=1e9,bk="";
+    if(i&&j){const c=D[i-1][j-1]+cost(i-1,j-1);if(c<best){best=c;bk="s";}}
+    if(i){const c=D[i-1][j]+1;if(c<best){best=c;bk="d";}}
+    if(j){const c=D[i][j-1]+1;if(c<best){best=c;bk="i";}}
+    D[i][j]=best;B[i][j]=bk;}}
+  const res=model.map(()=>({status:"missing",note:"ぬけている"})),extra=[];
+  let i=n,j=m;
+  while(i||j){const bk=B[i][j];
+    if(bk==="s"){const a=model[i-1],b=w[j-1];
+      if(!b.joined&&a===b.t)res[i-1]={status:"ok"};
+      else if(b.joined&&b.k===mk[i-1])res[i-1]={status:"bad",written:b.t,note:"単語の間があいていない"};
+      else if(mk[i-1]===b.k)res[i-1]={status:"bad",written:b.t,note:a.toLowerCase()===b.t.toLowerCase()?"大文字・小文字":"ピリオドや記号"};
+      else if(/^_+$/.test(b.t))res[i-1]={status:"bad",note:"書いていない"};
+      else res[i-1]={status:"bad",written:b.t,note:"つづり"};
+      i--;j--;}
+    else if(bk==="d"){i--;}
+    else{extra.unshift(w[j-1].t);j--;}}
+  return {res,extra,cost:D[n][m]};
+}
+function gradeText(text,en){
+  const model=tokens(en);
+  const lines=text.replace(/[‘’]/g,"'").replace(/[“”]/g,'"').split(/\n+/).map(l=>l.trim()).filter(Boolean);
+  const cands=[];
+  lines.forEach((l,i)=>{cands.push(l);if(i+1<lines.length)cands.push(l+" "+lines[i+1]);});
+  if(lines.length>2)cands.push(lines.join(" "));
+  if(!cands.length)cands.push("");
+  let best=null;
+  cands.forEach(c=>{const a=alignTokens(model,c.split(/\s+/).filter(Boolean));a.text=c;if(!best||a.cost<best.cost)best=a;});
+  return best;
+}
+function loadPhoto(file){
+  return new Promise((ok,ng)=>{
+    const url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{
+      const draw=(max,q)=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement("canvas");
+        c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);return c.toDataURL("image/jpeg",q);};
+      const big=draw(1500,.82),thumb=draw(420,.5);URL.revokeObjectURL(url);ok({big,thumb});};
+    img.onerror=()=>{URL.revokeObjectURL(url);ng(new Error("image"));};
+    img.src=url;});
+}
+async function askAI(dataUrl,mode){
+  const r=await fetch(save.aiUrl,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({pass:save.aiPass,mode:mode||"line",image:dataUrl.split(",")[1]})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||typeof j.text!=="string")throw new Error(j.error||("HTTP "+r.status));
+  return j.text;
+}
+function scaffold(item,stage,blanks){
+  const tk=tokens(item.en);
+  if(stage===1)return `<div class="bank">${shuffle(tk.map(t=>t.replace(/[.,!?"]/g,""))).map(t=>`<span>${esc(t)}</span>`).join("")}</div>`;
+  if(stage===2||stage===3)return `<div class="scaf">${tk.map((t,i)=>blanks.has(i)?`<span class="blank" style="width:${Math.max(1.4,t.length*.62)}em"></span>`:esc(t)).join(" ")}</div>`;
+  if(stage===4)return `<div class="scaf">${tk.map(t=>{const u=t.replace(/^"/,"");return esc(u[0])+`<span class="blank" style="width:${Math.max(.8,(u.length-1)*.62)}em"></span>`;}).join(" ")}</div>`;
+  return "";
+}
+function paperQuestion(){
+  const {part,stage,queue,pos}=run;
+  const idx=queue[pos],item=part.items[idx],id=sid(part,idx);
+  const tk=tokens(item.en),blanks=blankSet(id,item.en,stage);
+  let wrong=new Set(),extraOn=new Set(),extra=[],notes={},readDone=false,photo=null,aiText=null,override=false;
+  const aiOn=!!save.aiUrl;
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="quit">← やめる</button>
+   <div class="grow"><b>${stage}. ${STAGES[stage].name}</b>　<span class="sub">${part.name}　${pos+1} / ${queue.length} 文</span>
+    <div class="bar"><i style="width:${pos/queue.length*100}%"></i></div></div></div>
+  <div class="panel" style="margin-bottom:8px">
+   <div class="sp">${esc(item.sp)}</div>
+   <div class="ja">${esc(item.ja)}</div>
+   <div id="scaf">${scaffold(item,stage,blanks)}</div>
+  </div>
+  <div class="hint" id="hint">✏️ ノートに鉛筆で、英文を全部書こう。</div>
+  <div id="after"></div>
+  <div class="row" id="actions">
+   ${aiOn?`<button class="link" id="selfbtn">自分で答え合わせ</button><span class="grow"></span><button class="btn" id="shotbtn">📷 ノートを撮って採点</button>`
+         :`<span class="grow"></span><button class="btn" id="selfbtn">書けた → 答え合わせ</button>`}
+  </div>
+  <input type="file" id="cam" accept="image/*" capture="environment" hidden>`;
+  $("#quit").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}partScreen(part);};
+  $("#selfbtn").onclick=()=>reveal();
+  if(aiOn){
+    $("#shotbtn").onclick=()=>$("#cam").click();
+    $("#cam").onchange=async e=>{
+      const f=e.target.files[0];if(!f)return;
+      const h=$("#hint");h.className="hint";h.textContent="AIが字を読んでいます…";$("#shotbtn").disabled=true;
+      try{
+        const ph=await loadPhoto(f);photo=ph.thumb;
+        const text=await askAI(ph.big);
+        aiText=text;const g=gradeText(text,item.en);aiText=g.text;
+        g.res.forEach((r,i)=>{if(r.status!=="ok"){wrong.add(i);notes[i]=r;}});
+        extra=g.extra;extra.forEach((_,i)=>extraOn.add(i));
+        reveal();
+      }catch(err){
+        h.className="hint warn";h.textContent="AIに送れなかった。自分で答え合わせしよう。("+err.message+")";
+        aiText=null;reveal(true);
+      }
+    };
+  }
+  function chips(){
+    return `<div class="chips">${tk.map((t,i)=>{const bad=wrong.has(i),n=notes[i];
+      return `<button class="chip ${bad?"bad":""}" data-i="${i}">${esc(t)}${bad&&n?`<small>${n.written?"書いた字: "+esc(n.written)+"　":""}${n.note}</small>`:""}</button>`;}).join("")}
+      ${extra.map((t,i)=>`<button class="chip ${extraOn.has(i)?"bad":""}" data-x="${i}">${esc(t)}<small>よぶんな単語</small></button>`).join("")}</div>`;
+  }
+  function drawChips(){
+    $("#chipbox").innerHTML=chips();
+    $("#chipbox").querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;wrong.has(i)?wrong.delete(i):wrong.add(i);if(aiText!==null)override=true;beep("tap");drawChips();nextLabel();});
+    $("#chipbox").querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{const i=+b.dataset.x;extraOn.has(i)?extraOn.delete(i):extraOn.add(i);override=true;beep("tap");drawChips();nextLabel();});
+  }
+  const bad=()=>wrong.size+extraOn.size;
+  function nextLabel(){
+    const b=$("#nextbtn");if(!b)return;
+    if(bad()){b.textContent=`まちがい ${bad()} こ → つぎへ`;b.className="btn ng";}
+    else{b.textContent="ぜんぶ合っていた → つぎへ";b.className="btn ok";}
+  }
+  function reveal(keepHint){
+    $("#scaf").innerHTML="";
+    if(!keepHint){$("#hint").className="hint";
+      $("#hint").textContent=aiText!==null?(bad()?"赤い単語をノートとくらべよう。":"AIの採点：ぜんぶ合っていた!"):"お手本と、ノートの字を1語ずつくらべよう。";}
+    $("#after").innerHTML=`
+      ${photo?`<img class="shot" src="${photo}" alt="ノートの写真">`:""}
+      ${aiText!==null?`<div class="airead">AIが読んだ字：<div class="en">${esc(aiText||"(読めなかった)")}</div></div>`:""}
+      <div class="sub">お手本</div><div id="chipbox"></div>
+      <div class="check">${aiText!==null?"AIが読みまちがえていたら、<b>その単語をタップ</b>して直せる(直したことは記録に残る)。"
+        :"たしかめる4つ：<b>つづり</b>・<b>単語の間</b>・<b>大文字</b>・<b>ピリオドや ?</b><br>ちがっていた単語は、<b>その単語をタップ</b>して赤にする。"}</div>
+      <div id="gate"></div>`;
+    $("#actions").innerHTML=`<span class="sub" id="needread">声に出して読むと、つぎへ進める。</span><span class="grow"></span><button class="btn ok" id="nextbtn" disabled></button>`;
+    drawChips();nextLabel();
+    $("#nextbtn").onclick=finish;
+    speak(item.en);
+    micGate($("#gate"),item.en,()=>{readDone=true;const n=$("#needread");if(n)n.textContent="";$("#nextbtn").disabled=false;});
+  }
+  function finish(){
+    if(!readDone)return;
+    try{speechSynthesis.cancel();}catch(e){}
+    const ok=bad()===0,words=[...wrong].map(i=>tk[i]);
+    if(!ok){const m=save.miss[id]=save.miss[id]||{};words.forEach(t=>{const k=wkey(t);m[k]=(m[k]||0)+1;});}
+    save.lv[id]=ok?Math.max(lvOf(id),stage+1):Math.max(1,stage-1);
+    save.ink[id]={stage,paper:true,photo,aiText,override,wrong:[...wrong],t:Date.now()};
+    save.log.push({t:Date.now(),id,stage,ok,words,ai:aiText!==null,override});if(save.log.length>600)save.log.splice(0,save.log.length-600);
+    persist();
+    ok?run.ok++:run.ng++;beep(ok?"ok":"ng");
+    run.pos++;
+    run.pos<run.queue.length?question():result();
+  }
+  window.scrollTo(0,0);
+}
+
+/* ================= プリントに書く(印刷 → 鉛筆 → 1ページずつ撮影) ================= */
+function makeSheet(part,stage,idxs){
+  const key=part.id+":"+stage,old=save.sheets[key];
+  if(old&&old.idxs.join()===idxs.join())return old;
+  const rnd="ABCDEFGHJKLMNPRSTUVWXYZ";let c="";for(let i=0;i<3;i++)c+=rnd[Math.floor(Math.random()*rnd.length)];
+  const blanks={};idxs.forEach(i=>{blanks[i]=[...blankSet(sid(part,i),part.items[i].en,stage)];});
+  const sh={code:part.id+"-"+stage+"-"+c,idxs,blanks,t:Date.now()};
+  save.sheets[key]=sh;persist();return sh;
+}
+function sheetHTML(part,stage,sh){
+  const AV=169,slotW=t=>Math.max(14,t.length*4.6+5);
+  const slot=(t,hint)=>`<span class="sl" style="width:${slotW(t)}mm">${hint?`<i class="hn">${esc(hint)}</i>`:""}</span>`;
+  const items=sh.idxs.map((ix,n)=>{const it=part.items[ix],tk=tokens(it.en),bl=new Set(sh.blanks[ix]);
+    let body,h=7+6;
+    if(stage===5){const est=tk.reduce((a,t)=>a+t.length*4.6+9,0);const rows=Math.max(1,Math.ceil(est/150));
+      body=Array(rows).fill('<div class="sh-free"></div>').join("");h+=rows*15;}
+    else{let rows=1,x=0;
+      tk.forEach((t,i)=>{const w=bl.has(i)?slotW(t):t.length*3.6+2;if(x&&x+w>AV){rows++;x=0;}x+=w+4;});
+      body=`<div class="sh-line">${tk.map((t,i)=>bl.has(i)?slot(t,stage===4?t.replace(/^"/,"")[0]:""):`<span class="pw">${esc(t)}</span>`).join("")}</div>`;
+      h+=rows*14.5;}
+    let bank="";
+    if(stage===1){const ws=tk.map(t=>t.replace(/[.,!?"]/g,""));
+      bank=`<div class="sh-bank"><b>語群</b>${shuffle(ws).map(esc).join(" ／ ")}</div>`;
+      h+=(ws.join("").length*2.3+ws.length*6>150?2:1)*7.5;}
+    return {h,html:`<div class="sh-item"><div class="sh-q"><span class="sh-no">${n+1}</span>${esc(it.ja)}</div>${bank}${body}</div>`};});
+  const head=(k,n)=>`<div class="sh-head"><div><b>本文 手書き</b>　Program ${PROGRAM.id} ${part.name}　${stage}. ${STAGES[stage].name}</div><div class="sh-code">CODE ${sh.code}　${k}/${n}</div></div>
+   <div class="sh-sub">${stage===5?"日本語を見て、線の上に英文を書く。":"1本の線に単語を1つずつ書く。"}大文字・ピリオドや ? もわすれずに。こい鉛筆で、はっきりと。</div>`;
+  /* 実際の高さを測ってページに分ける(A4の内側 275mm) */
+  try{
+    const box=document.createElement("div");
+    box.style.cssText="position:absolute;left:-9999px;top:0;visibility:hidden";
+    box.innerHTML=`<div id="mmprobe" style="width:100mm;height:1px"></div><div class="sheet-p"><div id="hdprobe">${head(1,1)}</div>${items.map(it=>it.html).join("")}</div>`;
+    document.body.appendChild(box);
+    const mm=box.querySelector("#mmprobe").getBoundingClientRect().width/100;
+    const hd=box.querySelector("#hdprobe").getBoundingClientRect().height/mm;
+    box.querySelectorAll(".sh-item").forEach((el,i)=>{items[i].h=el.getBoundingClientRect().height/mm;});
+    document.body.removeChild(box);
+    if(mm>0)items.cap=275-10-hd-8;
+  }catch(e){}
+  const cap=items.cap||215;
+  const pages=[[]];let used=0;
+  items.forEach(it=>{if(used+it.h>cap&&pages[pages.length-1].length){pages.push([]);used=0;}pages[pages.length-1].push(it.html);used+=it.h;});
+  return pages.map((pg,k)=>`<div class="sheet-p"><i class="mk tl"></i><i class="mk tr"></i><i class="mk bl"></i><i class="mk br"></i>
+   ${head(k+1,pages.length)}
+   ${pg.join("")}</div>`).join("");
+}
+function printSheet(part,stage,sh){
+  if(!sh){partScreen(part);return;}
+  app.innerHTML=`
+  <div class="top noprint"><button class="btn plain small" id="back">← もどる</button>
+   <h1 class="grow" style="font-size:20px">プリント　${stage}. ${STAGES[stage].name}</h1></div>
+  <div class="row noprint"><button class="btn" id="doprint">🖨 印刷する</button>
+   <span class="sub">${sh.idxs.length} 文・A4(番号は全ページ通し)。印刷の画面が出ないときは、Safari でこのページを開いて印刷する。</span></div>
+  <div class="preview">${sheetHTML(part,stage,sh)}</div>`;
+  $("#back").onclick=()=>partScreen(part);
+  $("#doprint").onclick=()=>window.print();
+  window.scrollTo(0,0);
+}
+function parseSheetText(text){
+  const out={code:null,lines:{}};
+  text.replace(/[‘’]/g,"'").replace(/[“”]/g,'"').split(/\n+/).forEach(l=>{
+    l=l.trim();let m;
+    if((m=l.match(/^CODE\s*[:：]?\s*([0-9A-Za-z\-]+)/i)))out.code=m[1].toUpperCase();
+    else if((m=l.match(/^(\d{1,2})\s*[:：.)]\s*(.*)$/)))out.lines[+m[1]]=m[2].trim();
+  });
+  return out;
+}
+function gradeSheet(part,stage){
+  const key=part.id+":"+stage,sh=save.sheets[key];
+  if(!sh){partScreen(part);return;}
+  const aiOn=!!save.aiUrl;
+  const st=sh.idxs.map(ix=>({ix,tk:tokens(part.items[ix].en),wrong:new Set(),extra:[],extraOn:new Set(),notes:{},aiText:null,override:false}));
+  let shots=0,warn="",busy=false,msg="";
+  function draw(){
+    const unread=st.filter(x=>x.aiText===null).length;
+    app.innerHTML=`
+    <div class="top"><button class="btn plain small" id="back">← もどる</button>
+     <div class="grow"><b>${stage}. ${STAGES[stage].name}</b>　<span class="sub">${part.name}　プリント ${sh.code}</span></div></div>
+    ${aiOn?`<div class="panel" style="margin-bottom:8px">
+      <p style="margin:0 0 6px"><b>プリントを1ページずつ撮る。</b><span class="sub">　四すみの ┏ ┓ ┗ ┛ が入るように、真上から明るい場所で。</span></p>
+      <div class="row"><button class="btn" id="shot" ${busy?"disabled":""}>📷 ${shots?"もう1枚撮る":"撮る"}</button>
+       <span class="sub">${busy?"AIが字を読んでいます…":shots?`${shots} 枚撮った。${unread?`まだ読めていない文 ${unread}`:"全部読めた"}`:""}</span></div>
+      ${msg?`<p class="hint warn" style="margin:6px 0 0">${esc(msg)}</p>`:""}
+      ${warn?`<p class="hint warn" style="margin:6px 0 0">${esc(warn)}</p>`:""}
+     </div>`:`<div class="check">お手本とプリントの字を1語ずつくらべよう。たしかめる4つ：<b>つづり</b>・<b>単語の間</b>・<b>大文字</b>・<b>ピリオドや ?</b><br>ちがっていた単語は、<b>その単語をタップ</b>して赤にする。</div>`}
+    ${(!aiOn||shots)?`<div class="panel">
+      ${aiOn?`<p class="sub" style="margin-top:0">AIが読みまちがえていたら、その単語をタップして直せる(直したことは記録に残る)。読めていない文は、自分でくらべてタップする。</p>`:""}
+      ${st.map((x,n)=>`<div class="qitem"><div><span class="qno">${n+1}</span><b>${esc(part.items[x.ix].ja)}</b></div>
+        ${x.aiText!==null?`<div class="airead">AIが読んだ字：<div class="en">${esc(x.aiText||"(書いていない)")}</div></div>`:aiOn?'<div class="sub">まだAIが読めていない文</div>':""}
+        <div class="chips">${x.tk.map((t,i)=>{const bad=x.wrong.has(i),nt=x.notes[i];
+          return `<button class="chip ${bad?"bad":""}" data-n="${n}" data-i="${i}">${esc(t)}${bad&&nt?`<small>${nt.written?"書いた字: "+esc(nt.written)+"　":""}${nt.note}</small>`:""}</button>`;}).join("")}
+          ${x.extra.map((t,i)=>`<button class="chip ${x.extraOn.has(i)?"bad":""}" data-n="${n}" data-x="${i}">${esc(t)}<small>よぶんな単語</small></button>`).join("")}</div></div>`).join("")}
+      </div>
+      <div class="row"><span class="grow"></span><button class="btn" id="commit" ${busy?"disabled":""}>採点を確定する</button></div>`:""}
+    <input type="file" id="cam" accept="image/*" capture="environment" hidden>`;
+    $("#back").onclick=()=>partScreen(part);
+    app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+      const x=st[+b.dataset.n],y=window.scrollY;
+      if(b.dataset.i!==undefined){const i=+b.dataset.i;x.wrong.has(i)?x.wrong.delete(i):x.wrong.add(i);}
+      else{const i=+b.dataset.x;x.extraOn.has(i)?x.extraOn.delete(i):x.extraOn.add(i);}
+      if(x.aiText!==null)x.override=true;beep("tap");draw();window.scrollTo(0,y);});
+    if($("#commit"))$("#commit").onclick=commit;
+    if(aiOn){
+      $("#shot").onclick=()=>$("#cam").click();
+      $("#cam").onchange=async e=>{
+        const f=e.target.files[0];if(!f)return;
+        busy=true;msg="";draw();
+        try{
+          const ph=await loadPhoto(f);
+          const parsed=parseSheetText(await askAI(ph.big,"sheet"));
+          shots++;
+          if(parsed.code&&parsed.code!==sh.code)warn="プリントの CODE が「"+parsed.code+"」と読めた。今の段階のプリント("+sh.code+")かたしかめよう。";
+          let got=0;
+          st.forEach((x,n)=>{const line=parsed.lines[n+1];if(line===undefined)return;got++;
+            const g=alignTokens(x.tk,line.split(/\s+/).filter(Boolean));
+            x.aiText=line;x.wrong=new Set();x.notes={};x.override=false;
+            g.res.forEach((r,i)=>{if(r.status!=="ok"){x.wrong.add(i);x.notes[i]=r;}});
+            x.extra=g.extra;x.extraOn=new Set(g.extra.map((_,i)=>i));});
+          if(!got)msg="番号のついた文が読めなかった。もう一度、明るい場所で撮ってみよう。";
+          save.shots.push({code:sh.code,t:Date.now(),thumb:ph.thumb});if(save.shots.length>6)save.shots.splice(0,save.shots.length-6);persist();
+        }catch(err){msg="AIに送れなかった。("+err.message+") もう一度撮るか、自分でくらべてタップしよう。";shots=shots||1;}
+        busy=false;draw();
+      };
+    }
+  }
+  function commit(){
+    const bads=[];
+    st.forEach(x=>{
+      const id=sid(part,x.ix),ok=x.wrong.size+x.extraOn.size===0,words=[...x.wrong].map(i=>x.tk[i]);
+      if(!ok){bads.push(x.ix);const m=save.miss[id]=save.miss[id]||{};words.forEach(t=>{const k=wkey(t);m[k]=(m[k]||0)+1;});}
+      save.lv[id]=ok?Math.max(lvOf(id),stage+1):Math.max(1,stage-1);
+      save.ink[id]={stage,paper:true,sheet:sh.code,photo:null,aiText:x.aiText,override:x.override,wrong:[...x.wrong],t:Date.now()};
+      save.log.push({t:Date.now(),id,stage,ok,words,ai:x.aiText!==null,override:x.override});
+    });
+    if(save.log.length>600)save.log.splice(0,save.log.length-600);
+    delete save.sheets[key];persist();
+    beep(bads.length?"ng":"ok");
+    app.innerHTML=`<div class="panel">
+      <h2>${stage}. ${STAGES[stage].name}　おわり</h2>
+      <p style="font-size:22px;font-weight:800">${st.length} 文中　○ ${st.length-bads.length} 文　／　× ${bads.length} 文</p>
+      <p class="sub">${bads.length?`× の ${bads.length} 文は 1つ前の段階にもどった。お手本を聞いて、声に出して読んでおこう。`:"全部合っていた。つぎの段階へ進もう。"}</p>
+      <div class="row">${bads.length?'<button class="btn" id="readbad">まちがえた文を音読する</button>':""}<button class="btn ${bads.length?"plain":""}" id="go">つづける</button></div></div>`;
+    $("#go").onclick=()=>partScreen(part);
+    if(bads.length)$("#readbad").onclick=()=>startRead(part,bads);
+    window.scrollTo(0,0);
+  }
+  draw();window.scrollTo(0,0);
+}
+
+function result(){
+  const {part,stage,ok,ng,queue}=run;
+  app.innerHTML=`
+  <div class="panel">
+   <h2>${stage}. ${STAGES[stage].name}　おわり</h2>
+   <p style="font-size:22px;font-weight:800">${queue.length} 文中　○ ${ok} 文　／　× ${ng} 文</p>
+   <p class="sub">${ng?`× の ${ng} 文は 1つ前の段階にもどった。そこからもう一度のぼればいい。`:"全部合っていた。つぎの段階へ進もう。"}</p>
+   <button class="btn" id="go">つづける</button>
+  </div>`;
+  $("#go").onclick=()=>partScreen(part);
+  window.scrollTo(0,0);
+}
+
+/* ================= 画面:保護者モード ================= */
+function dayKey(t){const d=new Date(t);return d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();}
+function parent(){
+  const days={};
+  save.log.forEach(l=>{const k=dayKey(l.t);const d=days[k]=days[k]||{read:0,ok:0,ng:0,top:0};
+    if(l.stage===0)d.read++;else{l.ok?d.ok++:d.ng++;if(l.ok&&l.stage===5)d.top++;}});
+  const dkeys=Object.keys(days).slice(-14).reverse();
+  const sw=(k,label,note)=>`<div class="set"><div class="grow"><b>${label}</b><div class="sub">${note}</div></div>
+     <button class="btn small ${save[k]?"":"plain"}" data-sw="${k}">${save[k]?"オン":"オフ"}</button></div>`;
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="back">← もどる</button><h1 class="grow">保護者モード</h1></div>
+  <div class="panel"><h2>設定</h2>
+   ${sw("micRequired","マイク必須","オンにすると、声が聞こえるまで先へ進めない(「マイクを使わずに進む」が出なくなる)。発音の正誤は判定しません。")}
+   <div class="set"><div class="grow"><b>書き方</b><div class="sub">「プリントに書く」は印刷したプリントに鉛筆で書き、1ページずつ撮って採点。「ノートに書く」は1文ずつノートに書く。「画面に書く」は iPad＋Apple Pencil 用。</div></div>
+     <button class="btn small" id="modebtn">${{print:"プリントに書く",paper:"ノートに書く",screen:"画面に書く"}[save.mode]}</button></div>
+   ${sw("finger","指で書く","「画面に書く」のとき、オフなら Apple Pencil だけに反応する。")}
+   ${sw("sound","効果音","正解・まちがいの音。")}
+  </div>
+  <div class="panel"><h2>AI採点(ノートの写真)</h2>
+   <p class="sub">設定すると、プリントやノートを撮って採点できます。空のままなら自己採点だけで動きます。現在：<b>${save.aiUrl?"設定済み":"未設定"}</b></p>
+   <input class="txt" id="aiurl" placeholder="Cloudflare Worker のURL (https://….workers.dev)" value="${esc(save.aiUrl)}" autocapitalize="off" autocorrect="off">
+   <input class="txt" id="aipass" placeholder="合言葉" value="${esc(save.aiPass)}" autocapitalize="off" autocorrect="off">
+   <div class="row"><button class="btn small" id="aisave">保存</button><span class="sub" id="aimsg"></span></div>
+  </div>
+  <div class="panel"><h2>日ごとの取り組み</h2>
+   ${dkeys.length?`<table><tr><th>日付</th><th>音読</th><th>書いた文</th><th>○</th><th>×</th><th>何も見ないで書けた</th></tr>
+    ${dkeys.map(k=>{const d=days[k];return `<tr><td>${k}</td><td>${d.read}</td><td>${d.ok+d.ng}</td><td>${d.ok}</td><td>${d.ng}</td><td>${d.top}</td></tr>`;}).join("")}</table>`
+    :'<p class="sub">まだ記録がありません。</p>'}
+  </div>
+  ${save.shots.length?`<div class="panel"><h2>最近撮ったプリント</h2><div class="row" style="align-items:flex-start">
+    ${save.shots.slice().reverse().map(x=>`<div><img class="thumb" style="width:150px" src="${x.thumb}" alt=""><div class="sub">${esc(x.code)}・${new Date(x.t).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</div></div>`).join("")}</div></div>`:""}
+  <p class="sub">下は文ごとの記録。●の数が今こえた段階(5つで、何も見ないで書けた)。右は最後に書いた字とお手本。
+   自己採点があまいと感じたら「−」で段階を1つもどせます。</p>
+  ${PROGRAM.parts.map(p=>`<div class="panel"><h2>${p.name}</h2><table>
+   ${p.items.map((it,i)=>{const id=sid(p,i),l=lvOf(id),m=save.miss[id]||{};
+     const ms=Object.keys(m).map(k=>`${esc(k)}×${m[k]}`).join("、");
+     return `<tr><td><div class="en">${esc(it.en)}</div><div class="sub">${esc(it.ja)}</div>
+       <div class="lvdots">${"●".repeat(Math.min(l-1,5))}${"○".repeat(5-Math.min(l-1,5))}　<span class="sub">音読 ${save.read[id]?"済":"まだ"}</span></div>
+       <div class="pm"><button data-lv="${id}" data-d="-1" aria-label="段階を1つもどす">−</button><span class="sub">${l>MAXST?"クリア":"つぎは段階"+l}</span><button data-lv="${id}" data-d="1" aria-label="段階を1つ進める">＋</button></div>
+       ${ms?`<div style="color:var(--ng);font-weight:700">まちがえた単語：${ms}</div>`:""}</td>
+       <td>${save.ink[id]?`${save.ink[id].paper?(save.ink[id].photo?`<img class="thumb" src="${save.ink[id].photo}" alt="">`:`<span class="sub">${save.ink[id].sheet?"プリント "+esc(save.ink[id].sheet):"ノート"}${save.ink[id].aiText!=null?"":"(自己採点)"}</span>`)+(save.ink[id].aiText!=null?`<div class="sub">AIが読んだ字：<span class="en">${esc(save.ink[id].aiText)}</span>${save.ink[id].override?"<br><b style='color:var(--ng)'>本人が判定を直した</b>":""}</div>`:""):`<canvas class="thumb" data-id="${id}"></canvas>`}<div class="sub">段階${save.ink[id].stage}・${new Date(save.ink[id].t).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</div>`:'<span class="sub">まだ</span>'}</td></tr>`;}).join("")}
+   </table></div>`).join("")}
+  <div class="row"><button class="btn plain small" id="reset">きろくをぜんぶ消す</button><span class="sub" id="resetmsg"></span></div>`;
+  $("#back").onclick=home;
+  $("#modebtn").onclick=()=>{const y=window.scrollY;save.mode={print:"paper",paper:"screen",screen:"print"}[save.mode]||"print";persist();parent();window.scrollTo(0,y);};
+  $("#aisave").onclick=()=>{save.aiUrl=$("#aiurl").value.trim();save.aiPass=$("#aipass").value.trim();persist();$("#aimsg").textContent=save.aiUrl?"保存しました。":"未設定に戻しました。";};
+  app.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>{const y=window.scrollY;save[b.dataset.sw]=!save[b.dataset.sw];persist();parent();window.scrollTo(0,y);});
+  app.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.lv,y=window.scrollY;
+    save.lv[id]=Math.min(MAXST+1,Math.max(1,lvOf(id)+(+b.dataset.d)));persist();parent();window.scrollTo(0,y);});
+  app.querySelectorAll("canvas.thumb").forEach(c=>{
+    const id=c.dataset.id,[pid,i]=id.split(":"),part=PROGRAM.parts.find(p=>p.id===pid),it=part.items[+i],k=save.ink[id];
+    const lay=layout(it.en),H=sheetHeight(lay,k.stage),sc=.7;
+    c.width=W*sc;c.height=H*sc;const x=c.getContext("2d");x.setTransform(sc,0,0,sc,0,0);
+    drawBg(x,lay,k.stage,new Set(k.blanks),true,new Set(k.wrong));drawStrokes(x,k.strokes);
+  });
+  let armed=false;
+  $("#reset").onclick=()=>{
+    if(!armed){armed=true;$("#resetmsg").textContent="本当に消すなら、もう一度おす。";return;}
+    save={lv:{},miss:{},ink:{},read:{},log:[],finger:save.finger,micRequired:save.micRequired,sound:save.sound,mode:save.mode,aiUrl:save.aiUrl,aiPass:save.aiPass,sheets:{},shots:[]};persist();parent();
+  };
+  window.scrollTo(0,0);
+}
+
+document.addEventListener("gesturestart",e=>e.preventDefault());
+home();
+</script>
+</body>
+</html>
