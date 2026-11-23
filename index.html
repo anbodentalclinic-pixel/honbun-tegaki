@@ -176,6 +176,69 @@ img.thumb{height:auto}
 .lb{display:inline-block;width:6mm;height:10mm;border-bottom:.6mm solid #000;margin:0 .5mm}
 .wgap{display:inline-block;width:4mm}
 .wg{display:inline-flex;align-items:flex-end}
+/* しくみの総論(動く図) */
+.bstage{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:64px;background:var(--pale);border:2px dashed var(--muted);border-radius:12px;padding:12px 10px;margin:8px 0}
+.bstage .tile{transition:background .3s}
+.bstage .tile.j{margin-left:-11px;border-left-style:dotted;border-top-left-radius:0;border-bottom-left-radius:0}
+.bstage .tile.hj{border-top-right-radius:0;border-bottom-right-radius:0}
+.tile.sbj{background:#CFE8FF}.bstage .tile.star{background:var(--gold);padding:4px 7px;font-size:17px}.tile.vb{background:#fff}.tile.new{background:#BFEBCB}
+.drop{animation:dropin .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes dropin{0%{transform:translateY(-46px) scale(.5);opacity:0}100%{transform:none;opacity:1}}
+.flipin{animation:flipin .45s ease}
+@keyframes flipin{0%{transform:rotateX(90deg)}100%{transform:none}}
+.pulse{animation:pulse .6s ease 2}
+@keyframes pulse{50%{transform:scale(1.25)}}
+.lblock{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--edge);border-radius:14px;padding:0;margin:8px 0;overflow:hidden;font:inherit;box-shadow:0 3px 0 var(--edge)}
+.lblock .if{display:block;background:#FFE3B0;padding:6px 10px;font-weight:800;font-size:15px}
+.lblock .then{display:block;background:#CDEFD6;padding:6px 10px;font-weight:800;font-size:15px}
+.lblock .kw{display:inline-block;background:var(--edge);color:#fff;border-radius:6px;padding:0 7px;margin-right:6px;font-size:12px}
+.lblock.on{outline:4px solid var(--blue)}
+.lblock.done{opacity:.75}
+.lblock .ex{display:block;background:#fff;padding:6px 10px;font:700 19px system-ui,sans-serif}
+.bugtag{display:inline-block;background:var(--ng);color:#fff;font-weight:800;border-radius:8px;padding:1px 9px;font-size:14px}
+.bugtag.ok{background:var(--ok)}
+.bstage .tile.tap{cursor:pointer}
+.bstage .tile.fixed{background:#BFEBCB;border-color:var(--ok)}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.cmp{font:700 17px system-ui,sans-serif;margin:6px 0}
+.cmp .x{color:var(--ng);text-decoration:line-through}
+.cmp .o{color:var(--ok)}
+.stepdots{display:flex;gap:6px;justify-content:center;margin:4px 0}
+.stepdots i{width:12px;height:12px;border-radius:50%;border:2px solid var(--edge);background:#fff}
+.stepdots i.on{background:var(--gold)}
+.ptable{width:100%;border-collapse:separate;border-spacing:4px;table-layout:fixed}
+.ptable th{font-size:13px;text-align:center;border:0;padding:2px;color:var(--muted)}
+.ptable td{border:2px solid var(--edge);border-radius:10px;text-align:center;padding:6px 2px;font:700 19px system-ui,sans-serif;background:#fff;cursor:pointer}
+.ptable td.rowh{border:0;background:none;font:800 14px var(--body);cursor:default;text-align:left}
+.ptable .focus{background:var(--gold)}
+.ptable td.sel{outline:4px solid var(--blue)}
+.ptable td.hid{color:transparent;background:repeating-linear-gradient(45deg,#DCE7F0,#DCE7F0 6px,#fff 6px,#fff 12px)}
+.ptable .colin{animation:dropin .5s both}
+.ptable.mini{border-spacing:3px}
+.ptable.mini td{font-size:15px;padding:3px 1px;cursor:default;border-width:1.5px}
+.ptable.mini td.rowh{font-size:12px}
+.ptable.mini td.dim{opacity:.38}
+.ptable.pat td{font-size:12.5px;line-height:1.25;padding:5px 2px;white-space:normal;word-break:keep-all}
+.ptable.pat td.rowh{font-size:11.5px;line-height:1.2}
+.ptable.pat small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;font-family:system-ui,sans-serif}
+.ptable.pat td.rowh small{font-family:var(--body)}
+.ptable th small{font-size:10.5px}
+.ptable th{font-size:11.5px;letter-spacing:-.4px;line-height:1.3;white-space:nowrap}
+.ptable.pat th{white-space:normal}
+.chipsel.terms button{font-size:13px;padding:3px 9px;border-width:1.5px;border-radius:10px}
+.termbox{font-size:14px;margin-top:4px}
+.ptable td.sbjc{background:#CFE8FF;outline:3px solid var(--blue)}
+.ptable.mini td.focus{outline:3px solid var(--gold-edge)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;font-weight:800;margin:4px 0}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;border:2px solid var(--edge);vertical-align:-2px;margin-right:4px}
+.chipsel{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.chipsel button{background:#fff;border:2px solid var(--edge);border-radius:12px;padding:6px 12px;font:inherit;font-weight:800;font-size:16px}
+.chipsel button.on{background:var(--edge);color:#fff}
+.chipsel button[disabled]{opacity:.35}
+.bigemoji{font-size:44px;line-height:1.2;text-align:center;min-height:56px;letter-spacing:4px}
+.lab{font-size:14px;font-weight:800;color:var(--muted);margin-top:8px}
+@media (prefers-reduced-motion: reduce){.drop,.flipin,.pulse,.ptable .colin{animation:none!important}}
 /* キャラクター「ポン」 */
 .buddy{flex:none;width:64px;height:64px}
 .buddy svg{width:100%;height:100%;overflow:visible;animation:bob 2.2s ease-in-out infinite;transform-origin:50% 100%}
@@ -206,7 +269,7 @@ img.thumb{height:auto}
 </style>
 </head>
 <body>
-<div id="pvbar" hidden><span>👀 中身の確認中：記録されません。全部の段階を開けます。</span><button id="pvend">確認をおわる</button></div>
+<div id="pvbar" hidden><span>👀 中身の確認中：記録されません。解かなくても進めます。</span><button id="pvend">確認をおわる</button></div>
 <main id="app"></main>
 <script>
 /* ================= データ(本文JUMPと同じ文) ================= */
@@ -296,7 +359,7 @@ const progOf=part=>PROGRAMS.find(g=>g.parts.includes(part));
 const LESSONS={
  6:[
   {id:'6A',name:'him / her / them',sub:'「〜を・〜に」の形の代名詞',
-   rule:'動詞や with のあとでは、he → him、she → her、they → them に形が変わる。',
+   rule:'動詞や with(前置詞)のあとでは、目的格(〜を・に の形)を使う。he → him、she → her、they → them。',
    demo:[
     {t:['I','respect','Jackson.'],h:[2],c:'Jackson をくり返したくないときは…'},
     {t:['I','respect','him.'],h:[2],c:'him(彼を)に言いかえる!'},
@@ -312,7 +375,7 @@ const LESSONS={
     {q:'order',ja:'私は彼を尊敬しています。',en:'I respect him.'},
     {q:'order',ja:'彼のことを教えて。',en:'Tell me about him.'}]},
   {id:'6B',name:'Why ～? — Because ～.',sub:'理由をたずねる・答える',
-   rule:'「なぜ?」は Why を先頭に置いて疑問文を続ける。答えは Because(〜だから)で始める。',
+   rule:'「なぜ?」は疑問詞 Why を先頭に置いて、疑問文を続ける。答えは Because(〜だから)で始める。',
    demo:[
     {t:['It','is','dangerous.'],h:[1],c:'ふつうの文。'},
     {t:['Is','it','dangerous?'],h:[0],c:'疑問文にして…'},
@@ -328,7 +391,7 @@ const LESSONS={
  ],
  7:[
   {id:'7A',name:'There is / There are',sub:'「〜があります・〜がいます」',
-   rule:'1つ(単数)なら There is、2つ以上(複数)なら There are。疑問文は is / are が先頭。',
+   rule:'1つ(単数)なら There is、2つ以上(複数)なら There are。疑問文は be動詞(is / are)が先頭。',
    demo:[
     {t:['There','is','a famous place','in Sydney.'],h:[1,2],c:'1つ(a famous place)なら is。'},
     {t:['There','are','a lot of unique animals','in Australia.'],h:[1,2],c:'たくさんなら are に切りかわる!'},
@@ -343,7 +406,7 @@ const LESSONS={
     {q:'order',ja:'シドニーに有名な場所があります。',en:'There is a famous place in Sydney.'},
     {q:'order',ja:'オーストラリアにはめずらしい動物がたくさんいます。',en:'There are a lot of unique animals in Australia.'}]},
   {id:'7B',name:'How ～? — By ～.',sub:'「どうやって?」と手段の答え',
-   rule:'「どうやって〜?」は How を先頭に。乗り物で答えるときは By(〜で)を使う。',
+   rule:'「どうやって〜?」は疑問詞 How を先頭に。乗り物で答えるときは By(〜で)を使う。',
    demo:[
     {t:['I','can','go','there.'],h:[1],c:'ふつうの文。'},
     {t:['How','can','I','go','there?'],h:[0,1],c:'How を先頭にして、can も前へ!'},
@@ -357,6 +420,45 @@ const LESSONS={
     {q:'order',ja:'ヘリコプターか水上飛行機でです。',en:'By helicopter or seaplane.'}]}
  ]
 };
+/* しくみの総論(最初に全体を見せる)。build は [キー, 文字, 目じるし] のならびを1手ずつ動かす */
+Object.values(LESSONS).flat().forEach(L=>{L.rd=L.demo.map((_,i)=>i);}); /* 説明の文は全部音読 */
+LESSONS[6][0].pron=true;   /* このレッスンは、どの画面にも代名詞の表を出す */
+LESSONS[6][0].intro=[
+ {type:"table",h:"まず全体を見よう：人称代名詞の4つの形",
+  c:"I, you, he などを人称代名詞という。同じ人でも4つの形がある。1行ずつ、例文を声に出して読もう。"},
+ {type:"table",h:"今日の主役は目的格(〜を・に)の列",focus:true,
+  c:"黄色の列が今日の主役。「〜を・〜に」にあたる形で、目的格という。動詞のあとに入るよ。"},
+ {type:"morph",h:"同じ人でも、場所で形が変わる",
+  c:"「だれが」と「だれを」をえらんでみよう。文の最初と動詞のあとで、形が変わるのを見てね。"}];
+LESSONS[6][1].intro=[
+ {type:"build",h:"疑問文の作り方①　is の文",steps:[
+   {t:[["it","It","sbj"],["is","is","vb"],["d","dangerous"],["p","."]],c:"ふつうの文。「それは危険です。」",say:"It is dangerous."},
+   {t:[["is","Is","gold"],["it","it","sbj"],["d","dangerous"],["p","?","gold"]],c:"is(be動詞)が先頭にジャンプ! 最後は ? に変わる。これが疑問文。「それは危険ですか。」",say:"Is it dangerous?"},
+   {t:[["why","Why","new"],["is","is"],["it","it","sbj"],["d","dangerous"],["p","?"]],c:"先頭に Why(疑問詞)を置くと「なぜ危険なの?」。is は小文字にもどる。",say:"Why is it dangerous?",k:1}]},
+ {type:"build",h:"疑問文の作り方②　ふつうの動詞の文",steps:[
+   {t:[["j","Jackson","sbj"],["v","goes","vb hj"],["m","★","star j"],["to","to school"],["p","."]],c:"ふつうの文。主語が Jackson(I・you 以外の1人)なので、動詞に s がついて goes。これを三単現の s という。ここでは ★ で表すよ。",say:"Jackson goes to school."},
+   {t:[["do","Do","new"],["j","Jackson","sbj"],["v","goes","vb hj"],["m","★","star j"],["to","to school"],["p","?","gold"]],c:"go のような動詞を一般動詞という。be動詞(is)がない文は、先頭に Do を置いて疑問文を作る。でも、まだ完成じゃない…",say:""},
+   {t:[["do","Does","gold hj"],["m","★","star j"],["j","Jackson","sbj"],["v","go","vb"],["to","to school"],["p","?"]],c:"★(三単現のしるし)は Do が引き受けて Does になる。動詞は ★ が外れて、もとの形(原形)go にもどる。",say:"Does Jackson go to school?",k:1},
+   {t:[["why","Why","new"],["do","does","hj"],["m","★","star j"],["j","Jackson","sbj"],["v","go","vb"],["to","to school"],["p","?"]],c:"先頭に Why を置くと「なぜジャクソンは学校に行くの?」",say:"Why does Jackson go to school?"}]},
+ {type:"build",h:"疑問文の作り方③　has でたしかめる",steps:[
+   {t:[["he","He","sbj"],["v","has","vb hj"],["m","★","star j"],["a","a dream"],["p","."]],c:"has も ★(三単現のしるし)がついた形。もとの形(原形)は have だ。",say:"He has a dream."},
+   {t:[["do","Does","gold hj"],["m","★","star j"],["he","he","sbj"],["v","have","vb"],["a","a dream"],["p","?","gold"]],c:"★ が Does に移ると、動詞は原形 have にもどる。文字が動くのではなく、しるしが移るんだ。",say:"Does he have a dream?",k:1},
+   {t:[["why","Why","new"],["do","does","hj"],["m","★","star j"],["j","Jackson","sbj"],["v2","go","vb"],["to","to school"],["p","?"]],c:"では、理由をきいてみよう。「なぜジャクソンは学校に行くの?」",say:"Why does Jackson go to school?"},
+   {t:[["bc","Because","new"],["he","he","sbj"],["v","has","vb hj"],["m","★","star j"],["a","a dream"],["p","."]],c:"答えは Because で始める。答えはふつうの文(肯定文)なので、★ は動詞にもどって has。",say:"Because he has a dream.",k:1}]}];
+LESSONS[7][0].intro=[
+ {type:"count",h:"1つ(単数)なら is、2つ以上(複数)なら are",
+  c:"＋ と − で数を変えてみよう。数が変わると、is と are が切りかわるよ。"},
+ {type:"build",h:"疑問文の作り方　There is / are の文",steps:[
+   {t:[["th","There","sbj"],["are","are","vb"],["k","koalas"],["in","in Australia"],["p","."]],c:"ふつうの文。「オーストラリアにコアラがいます。」",say:"There are koalas in Australia."},
+   {t:[["are","Are","gold"],["th","there","sbj"],["k","koalas"],["in","in Australia"],["p","?","gold"]],c:"are(be動詞)が先頭にジャンプ! これが疑問文。「コアラがいますか。」",say:"Are there koalas in Australia?",k:1},
+   {t:[["y","Yes,","new"],["th","there","sbj"],["are","are","vb"],["p","."]],c:"答えも there を使う。「はい、います。」",say:"Yes, there are."}]}];
+LESSONS[7][1].intro=[
+ {type:"build",h:"疑問文の作り方　can の文",steps:[
+   {t:[["i","I","sbj"],["can","can","vb"],["go","go"],["th","there"],["p","."]],c:"ふつうの文。「私はそこに行けます。」",say:"I can go there."},
+   {t:[["can","Can","gold"],["i","I","sbj"],["go","go"],["th","there"],["p","?","gold"]],c:"can(助動詞)が先頭にジャンプ! これが疑問文。「そこに行けますか。」",say:"Can I go there?"},
+   {t:[["how","How","new"],["can","can"],["i","I","sbj"],["go","go"],["th","there"],["p","?"]],c:"先頭に How(疑問詞)を置くと「どうやって行けるの?」",say:"How can I go there?",k:1}]},
+ {type:"vehicle",h:"答えは By + 乗り物",
+  c:"乗り物をタップしてみよう。「〜で」は By のあとに乗り物を置くだけ。a や the はつけないよ。"}];
 /* 新出語(先に空らんにする) */
 const VOCAB=new Set(("respect tell hour hours across savanna tough kenya every morning kilometer kilometers run runs walk walks take takes "+
  "amazing dangerous attack schoolchildren safe parent parents pray safety has what's airplane way dream sometimes elephants because "+
@@ -376,7 +478,7 @@ const MAXST=5;
 
 /* ================= 保存 ================= */
 const KEY="honbun-tegaki-p6-v1";
-let save={lv:{},miss:{},ink:{},read:{},lessons:{},ej:{},wv:{},wp:{},wbad:{},log:[],finger:false,micRequired:false,sound:true,mode:"print",aiUrl:"",aiPass:"",sheets:{},shots:[]};
+let save={lv:{},miss:{},ink:{},read:{},lessons:{},ej:{},wv:{},wp:{},wbad:{},app:{},log:[],finger:false,micRequired:false,sound:true,mode:"print",aiUrl:"",aiPass:"",sheets:{},shots:[]};
 try{const r=localStorage.getItem(KEY); if(r) save=Object.assign(save,JSON.parse(r));}catch(e){}
 /* 保護者の「中身の確認」：記録せずに全部の段階を開ける。終わると元の記録にもどす */
 let preview=false,realSave=null;
@@ -384,6 +486,12 @@ function startPreview(){realSave=JSON.stringify(save);preview=true;document.getE
 function endPreview(){
   try{speechSynthesis.cancel();}catch(e){}
   if(realSave)save=JSON.parse(realSave);realSave=null;preview=false;document.getElementById("pvbar").hidden=true;parent();
+}
+/* 確認中だけ出す「とばす」ボタン */
+function addSkip(fn){
+  const d=document.createElement("div");d.className="row";d.style.marginTop="10px";
+  d.innerHTML='<span class="grow"></span><button class="btn plain small" id="pvskip">👀 解かずにとばす ▶</button>';
+  app.appendChild(d);d.querySelector("#pvskip").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}fn();};
 }
 function persist(){
   if(preview)return;
@@ -488,9 +596,21 @@ function listen(onRes,onErr){
   try{speechSynthesis.cancel();r.start();}catch(e){onErr("start");}
   return r;
 }
+/* 「聞いた」チェック：音声を自動で流し、さいごまで流れたら ✓ をつけて onDone */
+function listenGate(host,text,onDone){
+  host.innerHTML=`<div class="row" style="margin:6px 0"><button class="btn plain small" id="lg">🔊 再生中…</button><span class="heard" id="lgs" style="margin:0">さいごまで聞くと進める。</span></div>`;
+  let done=false;
+  const play=()=>{const b=host.querySelector("#lg");if(b)b.textContent="🔊 再生中…";
+    speak(text,()=>{if(!document.body.contains(host))return;const b2=host.querySelector("#lg");if(!b2)return;
+      b2.textContent="🔊 もう一度聞く";const st=host.querySelector("#lgs");st.className="heard ok";st.textContent="✓ 聞いた";
+      if(!done){done=true;onDone&&onDone();}});};
+  host.querySelector("#lg").onclick=play;play();
+}
 /* host に音読の箱を出す。声が聞こえたら onDone */
 function micGate(host,text,onDone,opts){
   opts=opts||{};const what=opts.what||"英文";
+  if(preview){host.innerHTML=`<div class="row" style="margin:6px 0"><button class="btn plain small" id="pvsay">🔊 聞く</button><span class="heard" style="margin:0">確認中：音読なしで進めます</span></div>`;
+    host.querySelector("#pvsay").onclick=()=>speak(text);onDone();return;}
   const strict=save.micRequired;let passed=false;
   const pass=()=>{if(passed)return;passed=true;onDone();};
   function draw(){
@@ -673,7 +793,7 @@ function partScreen(part){
   <div class="top"><button class="btn plain small" id="back">← もどる</button>
    <h1 class="grow">Program ${progOf(part).id} ${part.name} <span class="sub">${part.pages}</span></h1></div>
   <p class="sub">上から順に進む。まちがえた文は 1つ前の段階にもどるだけ(最初からにはならない)。</p>
-  ${save.mode==="print"?`<div class="steps">書く段階の進め方：① 🖨 プリントを作って印刷 → ② 鉛筆で書く → ③ ${aiReady()?"📷 撮って採点":"答え合わせ"}</div>`:""}
+  <div class="steps">書く段階の進め方：① 🎧 アプリで聞く・少しやる・音読する → ② ${save.mode==="print"?"🖨 プリントを印刷して鉛筆で書く → ③ "+(aiReady()?"📷 撮って採点":"答え合わせ"):save.mode==="paper"?"ノートに書いて答え合わせ":"画面に書いて答え合わせ"}</div>
   ${wl.length?`<div class="stage ${now===-3?"now":""} ${wvLeft||wpLeft?"":"done"}">
     <div class="num">${wvLeft||wpLeft?"語":"✓"}</div>
     <div class="grow"><div class="name">単語${now===-3?'<span class="tag">つぎはここ</span>':""}</div>
@@ -702,11 +822,13 @@ function partScreen(part){
       <div class="num">${done?"✓":s}</div>
       <div class="grow"><div class="name">${STAGES[s].name}${s===now?'<span class="tag">つぎはここ</span>':""}</div>
        <div class="sub">${save.mode==="paper"&&(s===2||s===3)?(s===2?"空らんをうめながら、文を全部書く":"空らんがふえる。文を全部書く"):STAGES[s].sub}</div>
-       <div class="sub">この段階をこえた文 ${passed} / ${n}${save.mode==="print"&&c?`　<b>あと ${c} 文</b>`:""}</div>
+       <div class="sub">この段階をこえた文 ${passed} / ${n}${c?`　<b>あと ${c} 文</b>`:""}</div>
+       ${c?(()=>{const q=part.items.map((_,i)=>i).filter(i=>preview||lvOf(sid(part,i))===s),ad=q.filter(i=>(save.app[sid(part,i)]||0)>=s).length;
+         return `<div class="row" style="margin-top:6px"><button class="btn small ${ad>=q.length?"plain":""}" data-app="${s}">🎧 アプリで練習${ad>=q.length?" ✓":`(${ad}/${q.length})`}</button></div>`;})():""}
        ${save.mode==="print"&&(c||save.sheets[part.id+":"+s])?`<div class="row" style="margin-top:6px">
          <button class="btn small plain" data-print="${s}">🖨 プリントを作る</button>
          <button class="btn small" data-grade="${s}" ${save.sheets[part.id+":"+s]?"":"disabled"}>${aiReady()?"📷 撮って採点":"答え合わせ"}</button></div>`:""}</div>
-      ${save.mode!=="print"&&c?`<button class="btn" data-st="${s}">あと ${c} 文</button>`:""}
+      ${save.mode!=="print"&&c?`<button class="btn" data-st="${s}">書く</button>`:""}
      </div>`;}).join("")}
   ${clear===n?`<div class="panel"><h2>ぜんぶ書けた!</h2>
     <p>${part.name} の ${n} 文を、何も見ないで書けた。</p>
@@ -726,6 +848,10 @@ function partScreen(part){
     const old=save.sheets[part.id+":"+st];
     printSheet(part,st,q.length?makeSheet(part,st,q):old);});
   app.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>gradeSheet(part,+b.dataset.grade));
+  app.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>{const st=+b.dataset.app;beep("tap");
+    let q=part.items.map((_,i)=>i).filter(i=>preview||lvOf(sid(part,i))===st);
+    const todo=q.filter(i=>(save.app[sid(part,i)]||0)<st);
+    appStep(part,st,todo.length?todo:q,0,{miss:0});});
   window.scrollTo(0,0);
 }
 
@@ -733,7 +859,402 @@ function partScreen(part){
 function startLesson(L){
   beep("tap");
   const q=shuffle(L.quiz).map(x=>({...x}));
-  lessonDemo(L,0,{L,queue:q,pos:0,total:q.length,missed:new Set(),retried:new Set()});
+  const S={L,queue:q,pos:0,total:q.length,missed:new Set(),retried:new Set()};
+  L.intro?lessonIntro(L,0,S):lessonDemo(L,0,S);
+}
+/* ---- 総論：動く図 ---- */
+function lessonIntro(L,k,S){
+  try{speechSynthesis.cancel();}catch(e){}
+  const sc=L.intro[k],last=k===L.intro.length-1;
+  app.innerHTML=lessonTop(L,`まず全体 ${k+1} / ${L.intro.length}`)+`
+   <div class="panel"><h2 style="font-size:19px">${esc(sc.h)}</h2>
+    <div id="viz"></div>
+    <div class="buddyrow">${buddy("db")}<p class="fb bubble" id="cap">${esc(sc.c||"")}</p></div>
+    ${termBar(L)}
+    <div id="igate"></div>
+    <div class="row"><span class="sub" id="needread">${sc.type==="build"?"1手ごとに、文を声に出して読む。最後まで見ると進める。":sc.type==="table"?"声に出して読むと進める。":sc.type==="logic"?"ブロックを全部ひらいて、例文を読むと進める。":sc.type==="debug"?"バグを全部直して、正しい文を読むと進める。":"できた文を声に出して読むと進める。"}</span><span class="grow"></span>${k?'<button class="btn plain" id="prev">◀ もどる</button>':""}
+     <button class="btn" id="next" disabled>${last?"1つずつ見ていく ▶":"つぎへ ▶"}</button></div></div>`;
+  $("#quit").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}home();};
+  if(k)$("#prev").onclick=()=>lessonIntro(L,k-1,S);
+  $("#next").onclick=()=>{beep("tap");last?lessonDemo(L,0,S):lessonIntro(L,k+1,S);};
+  const cap=t=>{const c=$("#cap");if(c)c.textContent=t;setBuddy("db","jump");};
+  const unlock=()=>{const b=$("#next");if(b)b.disabled=false;const n=$("#needread");if(n)n.textContent="";};
+  /* need(文, 読めたとき)：その文の音読の箱を出す。文なしで呼ぶと箱を消す */
+  const need=(text,onPass,what)=>{const g=$("#igate");if(!g)return;if(!text){g.innerHTML="";return;}micGate(g,text,()=>{setBuddy("db","jump");const h=g.querySelector("#heard"),tx=h&&h.textContent;g.innerHTML=`<p class="heard ok" style="margin:6px 0">✓ ${esc(tx||"読めた")}</p>`;onPass&&onPass();},{what:what||"文"});};
+  const hear=(text,onPass)=>{const g=$("#igate");if(g)listenGate(g,text,onPass);};
+  ({table:vizTable,morph:vizMorph,build:vizBuild,count:vizCount,vehicle:vizVehicle,logic:vizLogic,debug:vizDebug})[sc.type]($("#viz"),sc,cap,unlock,need,hear);
+  if(preview)unlock();
+  window.scrollTo(0,0);
+}
+const PRON=[["私","I","my","me","mine"],["あなた","you","your","you","yours"],["彼","he","his","him","his"],["彼女","she","her","her","hers"],
+            ["それ","it","its","it",""],["私たち","we","our","us","ours"],["彼ら","they","their","them","theirs"]];
+/* ---- たっくん向け：ルールを「もし〜なら」のブロックで見せる／わるい例(バグ)を自分で直す ---- */
+LESSONS[6][0].intro.push(
+ {type:"logic",h:"ルールをプログラムふうに書くと",c:"ゲームのプログラムと同じ。「もし〜なら → こうする」で決まるよ。ブロックをタップして、例文を読もう。",
+  blocks:[{i:"文の最初(主語)に入れる",t:"主格　I / he / she / they",ex:"He walks to school."},
+          {i:"動詞のあとに入れる",t:"目的格　me / him / her / them",ex:"I respect him."},
+          {i:"with などの前置詞のあとに入れる",t:"目的格　me / him / her / them",ex:"He walks with her."},
+          {i:"名詞の前で「〜の」と言う",t:"所有格　my / his / her / their",ex:"This is his sister."}]},
+ {type:"debug",h:"バグを見つけて直そう",c:"下の文にはバグ(まちがい)が1つある。まちがっている単語をタップして直そう。",
+  bugs:[{bad:["I","respect","he."],i:[2],fix:["him."],why:"動詞 respect のあとは目的格。he ではなく him。"},
+        {bad:["He","walks","with","she."],i:[3],fix:["her."],why:"前置詞 with のあとも目的格。she ではなく her。"},
+        {bad:["He","often","helps","they."],i:[3],fix:["them."],why:"動詞 helps のあとは目的格。they ではなく them。"},
+        {bad:["Him","respects","me."],i:[0],fix:["He"],why:"文の最初(主語)は主格。Him ではなく He。"}]});
+LESSONS[6][1].intro.push(
+ {type:"logic",h:"ルールをプログラムふうに書くと",c:"疑問文づくりも「もし〜なら → こうする」。ブロックをタップして、例文を読もう。",
+  blocks:[{i:"be動詞(is・are)の文を疑問文にする",t:"be動詞を先頭へ動かす",ex:"Is it dangerous?"},
+          {i:"一般動詞の文を疑問文にする",t:"先頭に Do を置く",ex:"Do you like him?"},
+          {i:"そのとき主語が I・you 以外の1人(三単現)",t:"Do を Does に。動詞は原形にもどす",ex:"Does Jackson go to school?"},
+          {i:"理由をたずねる",t:"先頭に Why を足す",ex:"Why does Jackson go to school?"},
+          {i:"理由を答える",t:"Because で始める",ex:"Because he has a dream."}]},
+ {type:"debug",h:"バグを見つけて直そう",c:"下の文にはバグ(まちがい)がある。まちがっているところをタップして直そう。",
+  bugs:[{bad:["Why","it","is","dangerous?"],i:[1,2],fix:["is","it"],why:"疑問文は be動詞 is を主語 it の前に置く。"},
+        {bad:["Does","Jackson","goes","to school?"],i:[2],fix:["go"],why:"★(三単現)は Does が持っている。動詞は原形 go。"},
+        {bad:["Why","do","Jackson","go","to school?"],i:[1],fix:["does"],why:"主語 Jackson は I・you 以外の1人。do ではなく does。"},
+        {bad:["So","he","has","a dream."],i:[0],fix:["Because"],why:"理由の答えは Because で始める。"}]});
+LESSONS[7][0].intro.push(
+ {type:"logic",h:"ルールをプログラムふうに書くと",c:"数で決まるルールだ。ブロックをタップして、例文を読もう。",
+  blocks:[{i:"1つ(単数)",t:"There is a 〜.",ex:"There is a koala."},
+          {i:"2つ以上(複数)",t:"There are 〜s.",ex:"There are three parks."},
+          {i:"たずねる(疑問文にする)",t:"is / are を先頭へ動かす",ex:"Are there any parks?"}]},
+ {type:"debug",h:"バグを見つけて直そう",c:"下の文にはバグ(まちがい)がある。まちがっているところをタップして直そう。",
+  bugs:[{bad:["There","is","three parks","near my house."],i:[1],fix:["are"],why:"three parks は2つ以上(複数)。is ではなく are。"},
+        {bad:["There","are","a famous place","in Sydney."],i:[1],fix:["is"],why:"a famous place は1つ(単数)。are ではなく is。"},
+        {bad:["There","are","koalas","in Australia?"],i:[0,1],fix:["Are","there"],why:"疑問文は be動詞 are を先頭に動かす。"}]});
+LESSONS[7][1].intro.push(
+ {type:"logic",h:"ルールをプログラムふうに書くと",c:"たずね方と答え方のルール。ブロックをタップして、例文を読もう。",
+  blocks:[{i:"can の文を疑問文にする",t:"can を先頭へ動かす",ex:"Can I go there?"},
+          {i:"方法(どうやって)をたずねる",t:"先頭に How を足す",ex:"How can I go there?"},
+          {i:"乗り物で答える",t:"By + 乗り物(a や the はつけない)",ex:"By bike."}]},
+ {type:"debug",h:"バグを見つけて直そう",c:"下の文にはバグ(まちがい)がある。まちがっているところをタップして直そう。",
+  bugs:[{bad:["How","I","can","go","there?"],i:[1,2],fix:["can","I"],why:"疑問文は助動詞 can を主語 I の前に置く。"},
+        {bad:["What","can","I","go","there?"],i:[0],fix:["How"],why:"方法(どうやって)をたずねるのは How。What は「何」。"},
+        {bad:["By","a","bike."],i:[1],fix:[""],why:"By + 乗り物 には a や the をつけない。"},
+        {bad:["With","helicopter."],i:[0],fix:["By"],why:"乗り物で「〜で」と言うときは By。"}]});
+/* ---- 文の型の表(代名詞の表と同じ考え方)。rule(文) → [行,列] か "ans" を返す ---- */
+/* rows / cols は [文法用語, やさしい言いかえ]、cells は [型, 例文] */
+LESSONS[6][1].pat={
+  rows:[["be動詞の文","is・are を使う"],["一般動詞の文","go, like など"],["一般動詞・三単現 ★","主語が I・you 以外の1人"]],
+  cols:[["肯定文","ふつうの文"],["疑問文","たずねる文"],["Why の疑問文","理由をたずねる"]],
+  cells:[[["主語 is 〜.","It is dangerous."],["Is 主語 〜?","Is it dangerous?"],["Why is 主語 〜?","Why is it dangerous?"]],
+         [["主語 動詞 〜.","You like him."],["Do 主語 動詞 〜?","Do you like him?"],["Why do 主語 動詞 〜?","Why do you like him?"]],
+         [["主語 動詞★ 〜.","Jackson goes to school."],["Does★ 主語 原形 〜?","Does Jackson go to school?"],["Why does★ 主語 原形 〜?","Why does Jackson go to school?"]]],
+  ans:["答え：Because + 肯定文(ふつうの文).","Because he has a dream."],
+  terms:["be動詞","一般動詞","三単現","原形","疑問詞","肯定文","疑問文"],
+  rule:c=>{let m;
+    if(/^Because\b/i.test(c))return "ans";
+    if((m=/^(Why\s+)?(is|are|do|does)\b/i.exec(c))){const a=m[2].toLowerCase();return [a==="do"?1:a==="does"?2:0,m[1]?2:1];}
+    if(/\b(is|are)\b/i.test(c))return [0,0];
+    return /^(Jackson|He|She|It)\b/.test(c)?[2,0]:[1,0];}};
+LESSONS[7][0].pat={
+  rows:[["単数","1つ"],["複数","2つ以上"]],cols:[["肯定文","ふつうの文"],["疑問文","たずねる文"],["答え","Yes のとき"]],
+  cells:[[["There is a 〜.","There is a koala."],["Is there a 〜?","Is there a koala?"],["Yes, there is.",""]],
+         [["There are 〜s.","There are koalas."],["Are there 〜s?","Are there koalas?"],["Yes, there are.",""]]],
+  terms:["単数","複数","be動詞","肯定文","疑問文"],
+  rule:c=>/^There is\b/i.test(c)?[0,0]:/^There are\b/i.test(c)?[1,0]:/^Is there\b/i.test(c)?[0,1]:/^Are there\b/i.test(c)?[1,1]:/there is\W*$/i.test(c)?[0,2]:/there are\W*$/i.test(c)?[1,2]:null};
+LESSONS[7][1].pat={
+  rows:[["can の文","助動詞 can を使う"],["一般動詞の文","go など"],["一般動詞・三単現 ★","主語が I・you 以外の1人"]],
+  cols:[["肯定文","ふつうの文"],["How の疑問文","方法をたずねる"]],
+  cells:[[["主語 can 原形 〜.","I can go there."],["How can 主語 原形 〜?","How can I go there?"]],
+         [["主語 動詞 〜.","You go to school."],["How do 主語 動詞 〜?","How do you go to school?"]],
+         [["主語 動詞★ 〜.","He goes to school."],["How does★ 主語 原形 〜?","How does he go to school?"]]],
+  ans:["答え：By + 乗り物.(a や the はつけない)","By bike."],
+  terms:["助動詞","一般動詞","三単現","原形","疑問詞","前置詞"],
+  rule:c=>{const out=[];
+    if(/^How can\b/i.test(c))out.push([0,1]);else if(/^How do\b/i.test(c))out.push([1,1]);else if(/^How does\b/i.test(c))out.push([2,1]);
+    else if(/\bcan\b/i.test(c))out.push([0,0]);
+    if(/^By\b/.test(c)||/\bby (bike|bus|train|car|plane|helicopter|seaplane)\b/i.test(c))out.push("ans");
+    return out.length?out:null;}};
+LESSONS[6][0].terms=["人称代名詞","主格","所有格","目的格","所有代名詞","前置詞"];
+/* 文法用語のやさしい説明(タップで出す) */
+const TERMS={
+ "人称代名詞":"I, you, he など、人や物の名前のかわりに使うことば。",
+ "主格":"文の主語になる形。「〜は」「〜が」にあたる。例：He walks.",
+ "所有格":"持ち主を表す形。「〜の」にあたり、あとに名詞が続く。例：his bag",
+ "目的格":"動詞や前置詞(with など)のあとに入る形。「〜を」「〜に」にあたる。例：I respect him.",
+ "所有代名詞":"「〜のもの」を1語で表す形。あとに名詞は続かない。例：It's mine.",
+ "前置詞":"with, about, by, in など、名詞や代名詞の前に置くことば。例：with her, by bike",
+ "be動詞":"is, are, am のこと。「〜です」「〜がある・いる」を表す。",
+ "一般動詞":"be動詞以外の動詞。go, like, have など、動きや気持ちを表す。",
+ "三単現":"「三人称・単数・現在」をちぢめた言い方。主語が I・you 以外の1人(1つ)で、今のことを言うとき、動詞に s や es がつく。例：He goes. このアプリでは ★ で表す。",
+ "原形":"動詞のもとの形。s や es がつく前の形のこと。goes の原形は go、has の原形は have。",
+ "疑問詞":"Why(なぜ)、How(どうやって)、What(何)など、文の先頭に置いてたずねることば。",
+ "肯定文":"「〜です」「〜します」と言う、ふつうの文。",
+ "疑問文":"「〜ですか」「〜しますか」とたずねる文。最後に ? がつく。",
+ "単数":"1つ、1人のこと。",
+ "複数":"2つ以上、2人以上のこと。名詞に s がつく(複数形)。例：koalas",
+ "助動詞":"can(〜できる)のように、動詞の前に置いて意味を足すことば。あとの動詞は原形になる。"};
+function termBar(L){
+  const ts=L.terms||(L.pat&&L.pat.terms)||[];if(!ts.length)return "";
+  return `<div class="lab">ことばの説明(タップ)</div><div class="chipsel terms">${ts.map(t=>`<button data-term="${t}">${t}</button>`).join("")}</div><div class="wex termbox" hidden></div>`;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest&&e.target.closest("[data-term]");if(!b)return;
+  const box=b.parentElement.nextElementSibling;if(!box)return;
+  const same=box.dataset.t===b.dataset.term&&!box.hidden;
+  b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b&&!same));
+  if(same){box.hidden=true;return;}
+  box.dataset.t=b.dataset.term;box.hidden=false;box.innerHTML=`<b>${esc(b.dataset.term)}</b>：${esc(TERMS[b.dataset.term]||"")}`;
+});
+const hasRef=L=>!!(L.pron||L.pat);
+const refTable=(L,s,plain)=>L.pron?pronTable(s,plain):patTable(L,s,plain);
+const refColor=(L,s)=>L.pron?pronColor(s):patColor(s);
+function patHits(L,sentence){
+  const cells=[];let ans=false;
+  sentence.replace(/\(.*?\)/g,"").split("—").map(c=>c.trim().replace(/^(No\.|Yes\.)\s*/,"")).filter(Boolean).forEach(c=>{
+    /* 1つの区切りに2文あるときは、文ごとに見る */
+    c.split(/(?<=[.?!])\s+/).forEach(one=>{let r=L.pat.rule(one.trim());if(!r)return;
+      (Array.isArray(r)&&Array.isArray(r[0])||(Array.isArray(r)&&r.includes("ans"))?r:[r]).forEach(x=>{if(x==="ans")ans=true;else if(Array.isArray(x)&&!cells.some(y=>y[0]===x[0]&&y[1]===x[1]))cells.push(x);});});});
+  return {cells,ans};
+}
+function patTable(L,sentence,plain,title){
+  const P=L.pat,h=plain?{cells:[],ans:false}:patHits(L,sentence);
+  const on=(r,c)=>h.cells.some(x=>x[0]===r&&x[1]===c);
+  const cell=(x)=>`${esc(x[0])}${x[1]?`<small>${esc(x[1])}</small>`:""}`;
+  return `<div class="lab">${title||(plain?"文の型の表(ヒント)":"表のどの型を使っているか")}</div>
+   <table class="ptable mini pat"><tr><th style="width:23%"></th>${P.cols.map(c=>`<th>${c[0]}<br><small style="font-weight:500">${c[1]}</small></th>`).join("")}</tr>
+    ${P.rows.map((row,r)=>`<tr><td class="rowh">${row[0]}<small>${row[1]}</small></td>${P.cols.map((_,c)=>`<td class="${on(r,c)?"pulse":plain?"":"dim"}" style="${on(r,c)?"background:var(--gold);outline:3px solid var(--edge)":""}">${cell(P.cells[r][c])}</td>`).join("")}</tr>`).join("")}
+    ${P.ans?`<tr><td class="rowh"></td><td colspan="${P.cols.length}" class="${h.ans?"pulse":plain?"":"dim"}" style="${h.ans?"background:#BFEBCB;outline:3px solid var(--edge)":""}">${cell(P.ans)}</td></tr>`:""}</table>
+   ${h.cells.length||h.ans?`<div class="legend">${h.cells.map(x=>`<span><i style="background:var(--gold)"></i>${P.rows[x[0]][0]}(${P.rows[x[0]][1]})の ${P.cols[x[1]][0]}</span>`).join("")}${h.ans?`<span><i style="background:#BFEBCB"></i>答えの型</span>`:""}</div>`:""}`;
+}
+/* 文の中の「型を決めることば」に色をつける：Why/How/Because/By は緑、is/are/do/does/can は黄 */
+function patColor(sentence){
+  let start=true,prev="";
+  return sentence.split(/(\s+)/).map(tok=>{
+    if(!tok.trim())return tok;
+    const w=tok.replace(/[^A-Za-z]/g,""),lw=w.toLowerCase();let col="";
+    if(start&&/^(why|how|because|by)$/.test(lw))col="#BFEBCB";
+    else if(/^(is|are|do|does|can)$/.test(lw)&&(start||/^(why|how|there)$/.test(prev)))col="#FFC83D";
+    else if(/^(is|are)\W*$/i.test(tok)&&prev==="there")col="#FFC83D";
+    const out=col&&w?esc(tok).replace(esc(w),`<span style="background:${col};border-radius:6px;padding:0 4px">${esc(w)}</span>`):esc(tok);
+    start=/[.?!—]$/.test(tok)||tok==="—"||(start&&/^(yes|no),?$/i.test(tok));prev=lw;
+    return out;
+  }).join("");
+}
+/* 文の中の代名詞が、表のどのマスかを調べる → [{w, r, c}] (c: 0 は・が / 1 の / 2 を・に / 3 のもの) */
+const PCOL=["#CFE8FF","#D9F2DC","#FFC83D","#F6D5E8"],PNAME=["主格(〜は・が)","所有格(〜の)","目的格(〜を・に)","所有代名詞(〜のもの)"],
+  PTERM=["主格","所有格","目的格","所有代名詞"],PGLOSS=["〜は・が","〜の","〜を・に","〜のもの"];
+const pth=()=>PTERM.map((t,c)=>`<th>${t}<br><small style="font-weight:500">${PGLOSS[c]}</small></th>`).join("");
+function pronCells(sentence){
+  const raw=sentence.replace(/\(.*?\)/g,"").split(/\s+/).filter(Boolean),out=[];
+  const core=t=>t.replace(/[^A-Za-z']/g,"").replace(/'(s|m|re|ll|d)$/i,"");
+  raw.forEach((tok,n)=>{
+    const w=core(tok),lw=w.toLowerCase();if(!lw)return;
+    const prev=n?core(raw[n-1]).toLowerCase():"",startsClause=n===0||/[.?!—]$/.test(raw[n-1])||raw[n-1]==="—";
+    const nextIsWord=n+1<raw.length&&!/[.?!,]$/.test(tok)&&/^[A-Za-z]/.test(raw[n+1]);
+    const subjPos=startsClause||["do","does","did","can","is","are","why","because"].includes(prev);
+    let hit=null;
+    PRON.forEach((row,r)=>{[0,1,2,3].forEach(c=>{if(row[c+1]&&row[c+1].toLowerCase()===lw){(hit=hit||[]).push({r,c});}});});
+    if(!hit)return;
+    let pick=hit[0];
+    if(hit.length>1){
+      const cs=hit.map(h=>h.c);
+      if(cs.includes(0)&&cs.includes(2))pick=hit.find(h=>h.c===(subjPos?0:2));          /* you, it */
+      else if(cs.includes(1)&&cs.includes(2))pick=hit.find(h=>h.c===(nextIsWord?1:2));    /* her */
+      else if(cs.includes(1)&&cs.includes(3))pick=hit.find(h=>h.c===(nextIsWord?1:3));    /* his */
+    }
+    out.push({w,r:pick.r,c:pick.c,n});
+  });
+  return out;
+}
+/* 表(小)。cells のマスに色をつける。plain なら色なしの早見表 */
+function pronTable(sentence,plain){
+  const cells=plain?[]:pronCells(sentence);
+  const at=(r,c)=>cells.find(x=>x.r===r&&x.c===c);
+  return `<div class="lab">${plain?"代名詞の表(ヒント)":"表のどこを使っているか"}</div>
+   <table class="ptable mini"><tr><th></th>${pth()}</tr>
+    ${PRON.map((row,r)=>`<tr><td class="rowh">${row[0]}</td>${[0,1,2,3].map(c=>{const w=row[c+1];
+      if(!w)return `<td class="${plain?"":"dim"}" style="border-style:dashed">—</td>`;
+      const hit=at(r,c);
+      return `<td class="${hit?"pulse":plain?"":"dim"}" style="${hit?`background:${PCOL[c]};outline:3px solid var(--edge)`:""}">${esc(w)}</td>`;}).join("")}</tr>`).join("")}</table>
+   ${cells.length?`<div class="legend">${cells.map(x=>`<span><i style="background:${PCOL[x.c]}"></i>${esc(x.w)} →「${PNAME[x.c]}」の列</span>`).join("")}</div>`:""}`;
+}
+/* 文の中の代名詞に、表と同じ色をつける */
+function pronColor(sentence){
+  const cells=pronCells(sentence.replace(/\(.*?\)/g,m=>" ".repeat(0)+m)),raw=sentence.split(/(\s+)/);let n=-1;
+  const plainToks=sentence.replace(/\(.*?\)/g,"").split(/\s+/).filter(Boolean);
+  let k=0;
+  return raw.map(tok=>{
+    if(!tok.trim())return tok;
+    if(plainToks[k]!==tok)return esc(tok);   /* かっこ書きなど */
+    const hit=cells.find(x=>x.n===k);k++;
+    if(!hit)return esc(tok);
+    const i=tok.toLowerCase().indexOf(hit.w.toLowerCase());
+    return esc(tok.slice(0,i))+`<span style="background:${PCOL[hit.c]};border-radius:6px;padding:0 4px">${esc(tok.slice(i,i+hit.w.length))}</span>`+esc(tok.slice(i+hit.w.length));
+  }).join("");
+}
+function vizTable(host,sc,cap,unlock,need){
+  /* 例文を1文ずつ音読する。行の画面：私→あなた→…の順に各行の例文。列の画面：「〜を・に」の列の例文 */
+  let hidden=false,sel=null,cur=0,j=0,fj=0,colRead=false,first=true;
+  const ex=(r,c)=>{const w=PRON[r][c+1],s3=[2,3,4].includes(r);
+    return c===0?`${w[0].toUpperCase()+w.slice(1)} ${s3?"likes":"like"} music.`:c===1?`This is ${w} bag.`:c===2?`Anya knows ${w}.`:`This bag is ${w}.`;};
+  const rowEx=r=>[0,1,2,3].filter(c=>PRON[r][c+1]).map(c=>({r,c,w:PRON[r][c+1],e:ex(r,c)}));
+  const colEx=()=>PRON.map((_,r)=>({r,c:2,w:PRON[r][3],e:ex(r,2)}));
+  const exHTML=(list,idx)=>list.map((x,n)=>{const m=new RegExp("\\b"+x.w+"\\b","i").exec(x.e),i=m?m.index:0;
+    const st=n<idx?"":n===idx?"background:#fff;border:2px solid var(--edge);border-radius:8px;padding:0 6px":"opacity:.35";
+    return `<div class="en" style="font-size:19px;line-height:1.8;margin:2px 0;${st}">${n<idx?"✓ ":n===idx?"▶ ":"　"}${esc(x.e.slice(0,i))}<span style="background:var(--gold);border-radius:6px;padding:0 4px">${esc(x.e.slice(i,i+x.w.length))}</span>${esc(x.e.slice(i+x.w.length))}</div>`;}).join("");
+  const guided=()=>sc.focus?!colRead:cur<PRON.length;
+  const draw=()=>{
+    const pex=sc.focus?(colRead?"マスをタップすると、その形の例文が聞ける。":`<b>黄色の列の例文(1文ずつ)</b>${exHTML(colEx(),fj)}`)
+      :cur<PRON.length?`<b>「${PRON[cur][0]}」の行の例文(1文ずつ)</b>${exHTML(rowEx(cur),j)}`:"マスをタップすると、その形の例文が聞ける。";
+    host.innerHTML=`<table class="ptable"><tr><th></th>${pth()}</tr>
+     ${PRON.map((row,r)=>{const dim=!sc.focus&&r>cur?"opacity:.35":"";
+       return `<tr style="${dim}"><td class="rowh">${!sc.focus&&r<cur?"✓ ":!sc.focus&&r===cur?"▶ ":""}${row[0]}</td>${[0,1,2,3].map(c=>{const w=row[c+1];
+       if(!w)return '<td style="border-style:dashed;cursor:default;color:var(--muted)">—</td>';
+       return `<td data-r="${r}" data-c="${c}" class="${(sc.focus&&c===2)||(!sc.focus&&r===cur)?"focus":""} ${sel===r+"-"+c?"sel":""} ${hidden&&c===2&&sel!==r+"-"+c?"hid":""} ${first?"colin":""}" style="${first?`animation-delay:${c*.28+r*.03}s`:""}">${esc(w)}</td>`;}).join("")}</tr>`;}).join("")}</table>
+     <div class="wex" id="pex">${pex}</div>
+     ${sc.focus&&colRead?`<div class="row" style="margin-top:8px"><button class="btn small ${hidden?"":"plain"}" id="hide">${hidden?"黄色の列を見せる":"黄色の列をかくす"}</button><span class="sub">${hidden?"日本語を見て言ってから、タップで答え合わせ。":"かくして、言えるかためそう。"}</span></div>`:""}`;
+    first=false;
+    host.querySelectorAll("td[data-r]").forEach(td=>td.onclick=()=>{
+      if(guided())return;   /* 音読の途中は、順番どおりに進める */
+      const r=+td.dataset.r,c=+td.dataset.c;sel=r+"-"+c;const w=PRON[r][c+1],e=ex(r,c);
+      draw();beep("tap");speak(w+". "+e);
+      $("#pex").innerHTML=`<span class="en" style="font-size:22px">${esc(w)}</span>　${PRON[r][0]}${["は・が","の","を・に","のもの"][c]}(${PTERM[c]})<div class="en">${esc(e)}</div>`;});
+    if($("#hide"))$("#hide").onclick=()=>{hidden=!hidden;sel=null;draw();};
+  };
+  const askCell=()=>{
+    if(cur>=PRON.length){sel=null;draw();cap("7行ぜんぶ読めた! マスをタップすると例文も聞けるよ。");unlock();return;}
+    const list=rowEx(cur);
+    if(j>=list.length){cur++;j=0;beep("ok");askCell();return;}
+    const x=list[j];sel=x.r+"-"+x.c;draw();
+    cap(`「${PRON[cur][0]}」の行。▶ の文を声に出して読もう。黄色い単語が、青いわくのマスの形だよ。`);speak(x.e);
+    need(x.e,()=>{j++;beep("tap");askCell();},"▶ の文");
+  };
+  const askCol=()=>{
+    const list=colEx();
+    if(fj>=list.length){colRead=true;sel=null;draw();cap("読めた! 動詞のあとは、この形。「かくす」で言えるかためそう。");unlock();return;}
+    const x=list[fj];sel=x.r+"-"+x.c;draw();
+    cap("黄色の列(目的格)が今日の主役。動詞のあとに入る形だ。▶ の文を声に出して読もう。");speak(x.e);
+    need(x.e,()=>{fj++;beep("tap");askCol();},"▶ の文");
+  };
+  if(sc.focus){if(preview)fj=PRON.length;askCol();}
+  else{if(preview)cur=PRON.length;askCell();}
+}
+function vizMorph(host,sc,cap,unlock,need){
+  const P=[["私","👤","I","me",0],["彼","👦","He","him",2],["彼女","👧","She","her",3],["彼ら","👫","They","them",6]];  /* 最後の数字は表の行 */
+  let x=1,y=0,lastX=-1,lastY=-1;
+  const draw=()=>{
+    const v=(x===1||x===2)?"respects":"respect",sent=`${P[x][2]} ${v} ${P[y][3]}.`;
+    host.innerHTML=`<div class="lab">だれが(文の最初＝主語)→ 主格</div><div class="chipsel">${P.map((p,i)=>`<button data-x="${i}" class="${i===x?"on":""}" ${i===y?"disabled":""}>${p[1]} ${p[0]}</button>`).join("")}</div>
+     <div class="lab">だれを(動詞のあと)→ 目的格</div><div class="chipsel">${P.map((p,i)=>`<button data-y="${i}" class="${i===y?"on":""}" ${i===x?"disabled":""}>${p[1]} ${p[0]}</button>`).join("")}</div>
+     <div class="bstage" style="perspective:400px"><span class="tile sbj ${x!==lastX?"flipin":""}">${P[x][2]}</span><span class="tile">${v}</span><span class="tile gold ${y!==lastY?"flipin":""}">${P[y][3]}.</span></div>
+     <p class="sub" style="margin:0">${P[x][0]}が${P[y][0]}を尊敬している。</p>
+     <div class="lab">表のどこを使っているか</div>
+     <table class="ptable mini"><tr><th></th>${pth()}</tr>
+      ${PRON.map((row,r)=>`<tr><td class="rowh">${row[0]}</td>${[0,1,2,3].map(c=>{const w=row[c+1];
+        if(!w)return '<td class="dim" style="border-style:dashed">—</td>';
+        const isS=r===P[x][4]&&c===0,isO=r===P[y][4]&&c===2;
+        return `<td class="${isS?"sbjc":isO?"focus":"dim"} ${(isS&&x!==lastX)||(isO&&y!==lastY)?"pulse":""}">${esc(w)}</td>`;}).join("")}</tr>`).join("")}</table>
+     <div class="legend"><span><i style="background:#CFE8FF"></i>文の最初(主語)→ 主格の ${P[x][2].toLowerCase()==="i"?"I":P[x][2].toLowerCase()}</span><span><i style="background:var(--gold)"></i>動詞のあと → 目的格の ${P[y][3]}</span></div>`;
+    lastX=x;lastY=y;need(sent,unlock);
+    host.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{x=+b.dataset.x;beep("tap");draw();speak(`${P[x][2]} ${(x===1||x===2)?"respects":"respect"} ${P[y][3]}.`);cap(`文の最初(主語)だから、主格の ${P[x][2]}。`);});
+    host.querySelectorAll("[data-y]").forEach(b=>b.onclick=()=>{y=+b.dataset.y;beep("tap");draw();speak(`${P[x][2]} ${(x===1||x===2)?"respects":"respect"} ${P[y][3]}.`);cap(`動詞のあとだから、目的格の ${P[y][3]}。${P[y][2]} のままではないよ。`);});
+  };
+  draw();
+}
+function vizBuild(host,sc,cap,unlock,need,hear){
+  let i=0;const read={};
+  host.innerHTML=`<div class="bstage" id="bst"></div><div class="stepdots">${sc.steps.map((_,n)=>`<i data-d="${n}"></i>`).join("")}</div>
+    <div class="row" style="justify-content:center"><button class="btn plain small" id="bprev">◀ 1つ前</button><button class="btn" id="bnext">▶ つぎの変化</button></div>`;
+  const st=host.querySelector("#bst");
+  const show=(n,anim)=>{
+    const old={};st.querySelectorAll("[data-k]").forEach(el=>{old[el.dataset.k]={r:el.getBoundingClientRect(),t:el.textContent};});
+    const step=sc.steps[n];
+    st.innerHTML=step.t.map(([k,t,f])=>`<span class="tile ${f||""}" data-k="${k}">${esc(t)}</span>`).join("");
+    if(anim)st.querySelectorAll("[data-k]").forEach(el=>{
+      const o=old[el.dataset.k];
+      if(!o){el.classList.add("drop");return;}
+      const r=el.getBoundingClientRect(),dx=o.r.left-r.left,dy=o.r.top-r.top;
+      if(Math.abs(dx)>2||Math.abs(dy)>2){el.style.transition="none";el.style.transform=`translate(${dx}px,${dy}px)`;el.style.zIndex=2;void el.offsetWidth;
+        el.style.transition="transform .8s cubic-bezier(.3,1.5,.5,1)";el.style.transform="";}
+      else if(o.t!==el.textContent)el.classList.add("pulse");
+    });
+    host.querySelectorAll("[data-d]").forEach(d=>d.classList.toggle("on",+d.dataset.d<=n));
+    cap(step.c);if(step.say)speak(step.say);
+    host.querySelector("#bprev").disabled=n===0;
+    const bn=host.querySelector("#bnext"),lastStep=n>=sc.steps.length-1;
+    bn.textContent=lastStep?"↺ もう一度見る":"▶ つぎの変化";
+    if(step.say&&!read[n]){bn.disabled=true;const fin=()=>{read[n]=true;bn.disabled=false;if(lastStep)unlock();};
+      need(step.say,fin);}
+    else{need("");bn.disabled=false;if(lastStep)unlock();}
+  };
+  host.querySelector("#bnext").onclick=()=>{beep("tap");if(i>=sc.steps.length-1){i=0;show(0,false);}else{i++;show(i,true);}};
+  host.querySelector("#bprev").onclick=()=>{if(i>0){i--;show(i,true);}};
+  show(0,false);
+}
+/* ルールを「もし〜なら → 〜する」のブロックで見せる。タップで例文、読むと ✓ */
+function vizLogic(host,sc,cap,unlock,need){
+  const done=sc.blocks.map(()=>false);let open=-1;
+  const draw=()=>{
+    host.innerHTML=sc.blocks.map((b,n)=>`<button class="lblock ${n===open?"on":""} ${done[n]?"done":""}" data-b="${n}">
+      <span class="if"><span class="kw">もし</span>${esc(b.i)}</span>
+      <span class="then"><span class="kw">なら</span>${esc(b.t)}${done[n]?"　✓":""}</span>
+      ${n===open||done[n]?`<span class="ex">例：${esc(b.ex)}</span>`:""}</button>`).join("");
+    host.querySelectorAll("[data-b]").forEach(el=>el.onclick=()=>{
+      const n=+el.dataset.b;open=n;beep("tap");draw();speak(sc.blocks[n].ex);
+      if(done[n]){need("");return;}
+      cap(`もし「${sc.blocks[n].i}」なら →「${sc.blocks[n].t}」。例文を読もう。`);
+      need(sc.blocks[n].ex,()=>{done[n]=true;beep("ok");draw();
+        if(done.every(Boolean)){cap("ルールは全部で "+sc.blocks.length+" つ。プログラムみたいに、条件で決まるんだ。");unlock();}
+        else cap("OK! つぎのブロックもタップしよう。");},"例文");
+    });
+  };
+  draw();
+}
+/* わるい例(バグ)を自分で見つけて直す → いい例を読む */
+function vizDebug(host,sc,cap,unlock,need){
+  let k=0,fixed=false,miss=0;
+  const good=b=>b.bad.map((t,n)=>{const j=b.i.indexOf(n);return j<0?t:b.fix[j];}).filter(Boolean);
+  const draw=()=>{
+    if(k>=sc.bugs.length){
+      host.innerHTML=`<p><span class="bugtag ok">デバッグ完了</span></p>${sc.bugs.map(b=>`<div class="cmp"><span class="x">× ${esc(b.bad.join(" "))}</span><br><span class="o">○ ${esc(good(b).join(" "))}</span></div>`).join("")}`;
+      cap("全部直せた! わるい例といい例を見くらべておこう。");need("");unlock();return;
+    }
+    const b=sc.bugs[k];
+    host.innerHTML=`<p style="margin:0"><span class="bugtag ${fixed?"ok":""}">${fixed?"直った!":"🐞 バグあり"}</span>　<span class="sub">${k+1} / ${sc.bugs.length}</span></p>
+      <div class="bstage" id="bug">${fixed
+        ?b.bad.map((t,n)=>{const j=b.i.indexOf(n);const tx=j<0?t:b.fix[j];return tx?`<span class="tile ${j<0?"":"fixed flipin"}">${esc(tx)}</span>`:"";}).join("")
+        :b.bad.map((t,n)=>`<button class="tile tap ${miss>=2&&b.i.includes(n)?"pulse":""}" data-n="${n}">${esc(t)}</button>`).join("")}</div>
+      ${fixed?`<div class="cmp"><span class="x">× ${esc(b.bad.join(" "))}</span><br><span class="o">○ ${esc(good(b).join(" "))}</span></div>`:""}`;
+    host.querySelectorAll("[data-n]").forEach(el=>el.onclick=()=>{
+      const n=+el.dataset.n;
+      if(b.i.includes(n)){
+        fixed=true;beep("ok");draw();cap("見つけた! "+b.why);const g=good(b).join(" ");speak(g);
+        need(g,()=>{k++;fixed=false;miss=0;need("");draw();if(k<sc.bugs.length)cap("つぎのバグ。まちがっているところをタップしよう。");},"直した文");
+      }else{miss++;beep("ng");el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake");
+        cap(miss>=2?"そこは合っているよ。光っているところを見てみよう。":"そこは合っているよ。ほかの単語を見てみよう。");
+        if(miss===2)draw();}
+    });
+  };
+  draw();
+}
+function vizCount(host,sc,cap,unlock,need){
+  const TH=[["🐨","koala","koalas"],["🦘","kangaroo","kangaroos"],["🌳","park","parks"]],NUM=["","a","two","three","four","five"];
+  let n=1,t=0,lastV="";
+  const draw=()=>{
+    const v=n===1?"is":"are",sent=`There ${v} ${NUM[n]} ${n===1?TH[t][1]:TH[t][2]}.`;
+    host.innerHTML=`<div class="chipsel">${TH.map((x,i)=>`<button data-t="${i}" class="${i===t?"on":""}">${x[0]} ${x[1]}</button>`).join("")}</div>
+     <div class="bigemoji">${TH[t][0].repeat(n)}</div>
+     <div class="row" style="justify-content:center"><button class="btn" id="minus" ${n<=1?"disabled":""}>−</button><b style="font-size:26px;min-width:1.5em;text-align:center">${n}</b><button class="btn" id="plus" ${n>=5?"disabled":""}>＋</button></div>
+     <div class="bstage" style="perspective:400px"><span class="tile">There</span><span class="tile gold ${v!==lastV&&lastV?"flipin":""}">${v}</span><span class="tile">${NUM[n]}</span><span class="tile">${n===1?TH[t][1]:TH[t][2]}.</span></div>`;
+    const changed=lastV&&v!==lastV;lastV=v;need(sent,unlock);
+    const go=()=>{draw();speak(`There ${n===1?"is":"are"} ${NUM[n]} ${n===1?TH[t][1]:TH[t][2]}.`);};
+    host.querySelector("#minus").onclick=()=>{n--;beep("tap");go();};
+    host.querySelector("#plus").onclick=()=>{n++;beep("tap");go();};
+    host.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{t=+b.dataset.t;beep("tap");go();});
+    if(changed)cap(n===1?"1つ(単数)になったから is。名詞の s もなくなる。":"2つ以上(複数)になったから are。名詞に s がつく(複数形)。");
+  };
+  draw();
+}
+function vizVehicle(host,sc,cap,unlock,need){
+  const V=[["🚲","bike"],["🚌","bus"],["🚆","train"],["🚗","car"],["✈️","plane"],["🚁","helicopter"]];let v=-1;
+  const draw=()=>{
+    host.innerHTML=`<div class="bstage"><span class="tile new">How</span><span class="tile">do you go to school?</span></div>
+     <div class="chipsel" style="justify-content:center">${V.map((x,i)=>`<button data-v="${i}" class="${i===v?"on":""}" style="font-size:26px">${x[0]}</button>`).join("")}</div>
+     <div class="bstage">${v<0?'<span class="sub">乗り物をタップ</span>':`<span class="tile gold">By</span><span class="tile drop">${V[v][1]}.</span>`}</div>`;
+    host.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{v=+b.dataset.v;beep("tap");draw();speak("By "+V[v][1]+".");need("By "+V[v][1]+".",unlock);cap(`By ${V[v][1]}.　「${["自転車","バス","電車","車","飛行機","ヘリコプター"][v]}で」`);});
+  };
+  draw();
 }
 function lessonTop(L,meta){return `<div class="top"><button class="btn plain small" id="quit">← やめる</button>
   <div class="grow"><b>しくみ：${esc(L.name)}</b>　<span class="sub">${meta}</span></div></div>`;}
@@ -742,11 +1263,17 @@ function lessonDemo(L,i,S){
   app.innerHTML=lessonTop(L,`しくみ ${i+1} / ${L.demo.length}`)+`
    <div class="panel"><p class="sub" style="margin:0">${esc(L.sub)}</p>
     <div class="rail">${st.t.map((w,j)=>`<span class="tile ${st.h.includes(j)?"gold":""}">${esc(w)}</span>`).join("")}</div>
+    ${hasRef(L)?`<div class="en" style="font-size:20px;margin:4px 0">${refColor(L,sent)}</div>`:""}
     <div class="buddyrow">${buddy("db")}<p class="fb bubble" style="font-size:18px">${esc(st.c)}</p></div>
-    <div class="row"><button class="btn plain small" id="say">🔊 聞く</button><span class="grow"></span>
-     ${i?'<button class="btn plain" id="prev">◀ もどる</button>':""}<button class="btn" id="next">${i<L.demo.length-1?"つぎへ ▶":"ルールのまとめへ ▶"}</button></div></div>`;
+    ${hasRef(L)?refTable(L,sent):""}
+    ${termBar(L)}
+    <div id="gate"></div>
+    <div class="row">${(L.rd||[]).includes(i)?'<span class="sub" id="needread">この文は声に出して読むと、つぎへ進める。</span>':""}<span class="grow"></span>
+     ${i?'<button class="btn plain" id="prev">◀ もどる</button>':""}<button class="btn" id="next" disabled>${i<L.demo.length-1?"つぎへ ▶":"ルールのまとめへ ▶"}</button></div></div>`;
   $("#quit").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}home();};
-  $("#say").onclick=()=>speak(sent);speak(sent);setBuddy("db",i?"jump":"");
+  setBuddy("db",i?"jump":"");
+  if((L.rd||[]).includes(i)){speak(sent);micGate($("#gate"),sent,()=>{const b=$("#next");if(b)b.disabled=false;const n=$("#needread");if(n)n.textContent="";setBuddy("db","jump");},{what:"文"});}
+  else listenGate($("#gate"),sent,()=>{const b=$("#next");if(b)b.disabled=false;});
   if(i)$("#prev").onclick=()=>lessonDemo(L,i-1,S);
   $("#next").onclick=()=>{beep("tap");i<L.demo.length-1?lessonDemo(L,i+1,S):lessonRule(L,S);};
   window.scrollTo(0,0);
@@ -756,8 +1283,10 @@ function lessonRule(L,S){
   app.innerHTML=lessonTop(L,"ルールのまとめ")+`
    <div class="bcenter">${buddy("rb2","cheer")}</div>
    <div class="panel"><h2>ルールのまとめ</h2><p style="font-size:19px;font-weight:800;line-height:1.7">${esc(L.rule)}</p>
-    <div class="row"><button class="btn plain" id="redo">しくみをもう一度</button><span class="grow"></span><button class="btn" id="go">問題にチャレンジ ▶</button></div></div>`;
-  $("#quit").onclick=home;$("#redo").onclick=()=>lessonDemo(L,0,S);
+    ${L.pron?pronTable("Anya knows me. Anya knows you. Anya knows him. Anya knows her. Anya knows us. Anya knows them."):L.pat?patTable(L,"",true,"文の型の表(まとめ)"):""}
+    ${termBar(L)}
+    <div class="row"><button class="btn plain" id="redo">最初からもう一度</button><span class="grow"></span><button class="btn" id="go">問題にチャレンジ ▶</button></div></div>`;
+  $("#quit").onclick=home;$("#redo").onclick=()=>L.intro?lessonIntro(L,0,S):lessonDemo(L,0,S);
   $("#go").onclick=()=>{beep("tap");lessonQuiz(S);};
   window.scrollTo(0,0);
 }
@@ -785,17 +1314,21 @@ function lessonQuiz(S){
       <p style="font:700 22px system-ui,sans-serif;margin:8px 0">${esc(it.s).replace("___",'<span class="qblank">?</span>')}</p></div>
      <div class="buddyrow">${buddy("pb")}<p class="fb bubble" id="fb">ルールを思い出してね</p></div>
      ${opts.map((o,i)=>`<button class="opt center" data-i="${i}">${esc(o)}</button>`).join("")}
-     <div id="bottom"></div>`;
+     <div id="bottom">${hasRef(L)?refTable(L,"",true)+termBar(L):""}</div>`;
     $("#quit").onclick=home;
     let solved=false;
     app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
       if(solved)return;solved=true;const ok=opts[+b.dataset.i]===it.a;
       app.querySelectorAll(".opt").forEach((o,j)=>{if(opts[j]===it.a)o.classList.add("good");o.disabled=true;});
-      if(!ok)b.classList.add("bad");beep(ok?"ok":"ng");done(ok);speak(full);
+      if(!ok)b.classList.add("bad");beep(ok?"ok":"ng");done(ok);
       fb((ok?"正解! ":"おしい! ")+it.e+(ok?"":"　あとでもう一回出るよ。"),ok?"ok":"ng",ok?"jump":"sad");
-      $("#bottom").innerHTML=`<div class="check"><div class="en" style="font-size:20px">${esc(full)}</div></div>
-        <div class="row"><button class="btn plain small" id="say">🔊 もう一度</button><span class="grow"></span><button class="btn" id="next">つぎへ</button></div>`;
-      $("#say").onclick=()=>speak(full);$("#next").onclick=()=>{beep("tap");lessonQuiz(S);};
+      $("#bottom").innerHTML=`<div class="check"><div class="en" style="font-size:20px">${hasRef(L)?refColor(L,full):esc(full)}</div></div>
+        ${hasRef(L)?refTable(L,full)+termBar(L):""}
+        <div id="gate"></div>
+        <div class="row"><span class="sub" id="needread">できた文を声に出して読むと、つぎへ進める。</span><span class="grow"></span><button class="btn" id="next" disabled>つぎへ</button></div>`;
+      speak(full);
+      micGate($("#gate"),full,()=>{const nb=$("#next");if(nb)nb.disabled=false;const n=$("#needread");if(n)n.textContent="";},{what:"文"});
+      $("#next").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}beep("tap");lessonQuiz(S);};
     });
   }else{
     const ans=it.en.split(" ");let pool=shuffle(ans.map((t,i)=>({id:i,t,used:false}))),picked=[],missed=false,solved=false;
@@ -804,6 +1337,8 @@ function lessonQuiz(S){
       <p class="ja" style="margin:6px 0">${esc(it.ja)}</p>
       <div class="rail" id="rail"></div><div class="pool" id="pool"></div>
       <div class="buddyrow">${buddy("pb")}<p class="fb bubble" id="fb">日本語に合うようにならべよう</p></div>
+      <div id="ptab">${hasRef(L)?refTable(L,"",true)+termBar(L):""}</div>
+      <div id="gate"></div>
       <div class="row" id="acts"><button class="btn plain small" id="clr">やり直す</button><span class="grow"></span><button class="btn" id="chk">チェック</button></div></div>`;
     $("#quit").onclick=home;
     const draw=()=>{
@@ -819,8 +1354,10 @@ function lessonQuiz(S){
       if(got.join(" ")===it.en){
         solved=true;beep("ok");done(!missed);speak(it.en);
         fb("やったね! 正解!","ok","jump");
-        $("#acts").innerHTML=`<button class="btn plain small" id="say">🔊 もう一度</button><span class="grow"></span><button class="btn" id="next">つぎへ</button>`;
-        $("#say").onclick=()=>speak(it.en);$("#next").onclick=()=>{beep("tap");lessonQuiz(S);};return;
+        if(hasRef(L))$("#ptab").innerHTML=`<div class="en" style="font-size:20px;margin:4px 0">${refColor(L,it.en)}</div>`+refTable(L,it.en)+termBar(L);
+        $("#acts").innerHTML=`<span class="sub" id="needread">できた文を声に出して読むと、つぎへ進める。</span><span class="grow"></span><button class="btn" id="next" disabled>つぎへ</button>`;
+        $("#next").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}beep("tap");lessonQuiz(S);};
+        micGate($("#gate"),it.en,()=>{const b=$("#next");if(b)b.disabled=false;const n=$("#needread");if(n)n.textContent="";},{what:"文"});return;
       }
       missed=true;beep("ng");let k=0;while(k<got.length&&got[k]===ans[k])k++;
       const el=$("#rail").querySelector(`[data-r="${k}"]`);if(el)el.classList.add("bad");
@@ -828,6 +1365,7 @@ function lessonQuiz(S){
     };
     draw();
   }
+  if(preview)addSkip(()=>{S.pos++;lessonQuiz(S);});
   window.scrollTo(0,0);
 }
 
@@ -848,6 +1386,8 @@ function wordScreen(part){
   const cnt=(of,s)=>preview?wl.length:wl.filter((_,i)=>of(wid(part,i))===s).length, past=(of,s)=>wl.filter((_,i)=>of(wid(part,i))>s).length;
   let nowV=0;for(let s=1;s<=4;s++){if(cnt(wvOf,s)){nowV=s;break;}}
   let nowP=0;for(let s=1;s<=4;s++){if(cnt(wpOf,s)){nowP=s;break;}}
+  /* まちがえたことがある単語(声・プリントのどちらか) */
+  const weak=wl.map((_,i)=>i).filter(i=>save.log.some(l=>(l.kind==="wprint"||l.kind==="word")&&l.id===wid(part,i)&&l.ok===false));
   app.innerHTML=`
   <div class="top"><button class="btn plain small" id="back">← もどる</button>
    <h1 class="grow">単語 <span class="sub">Program ${progOf(part).id} ${part.name}・${n}語</span></h1></div>
@@ -866,7 +1406,15 @@ function wordScreen(part){
      <div class="sub">${WP[s].sub}</div><div class="sub">この段階をこえた単語 ${past(wpOf,s)} / ${n}${c?`　<b>あと ${c} 語</b>`:""}</div>
      ${c||has?`<div class="row" style="margin-top:6px"><button class="btn small plain" data-wprint="${s}">🖨 プリントを作る</button>
        ${s===1?`<button class="btn small" data-traced="1" ${c?"":"disabled"}>なぞった</button>`
-              :`<button class="btn small" data-wgrade="${s}" ${has?"":"disabled"}>${aiReady()?"📷 撮って採点":"答え合わせ"}</button>`}</div>`:""}</div></div>`;}).join("")}`;
+              :`<button class="btn small" data-wgrade="${s}" ${has?"":"disabled"}>${aiReady()?"📷 撮って採点":"答え合わせ"}</button>`}</div>`:""}</div></div>`;}).join("")}
+  <h2 class="sec">もう一度(テスト前の復習)</h2>
+  <p class="sub">段階に関係なく、いつでも使える。プリントは「日本語→英語」の形。まちがえた単語は「頭文字だけ」の段階にもどる。</p>
+  <div class="panel" style="margin-top:6px">
+   <div class="row"><button class="btn small plain" id="rvall">🖨 復習プリント(全部 ${n}語)</button>
+    <button class="btn small plain" id="rvweak" ${weak.length?"":"disabled"}>🖨 まちがえた単語だけ(${weak.length}語)</button></div>
+   <div class="row" style="margin-top:8px"><button class="btn small" id="rvgrade" ${save.sheets[part.id+":wR"]?"":"disabled"}>${aiReady()?"📷 復習プリントを撮って採点":"復習プリントの答え合わせ"}</button>
+    <button class="btn small plain" id="rvvoice">🎤 声でもう一度(ノーヒント)</button></div>
+  </div>`;
   $("#back").onclick=()=>partScreen(part);
   app.querySelectorAll("[data-wv]").forEach(b=>b.onclick=()=>{const st=+b.dataset.wv;beep("tap");
     wordVoice(part,st,wl.map((_,i)=>i).filter(i=>preview||wvOf(wid(part,i))===st),0,{ok:0,ng:0});});
@@ -876,6 +1424,11 @@ function wordScreen(part){
     wl.forEach((_,i)=>{const id=wid(part,i);if(wpOf(id)===1)save.wp[id]=2;});
     delete save.sheets[part.id+":w1"];save.log.push({t:Date.now(),kind:"wprint",id:part.id,stage:1,ok:true});persist();beep("ok");wordScreen(part);});
   app.querySelectorAll("[data-wgrade]").forEach(b=>b.onclick=()=>gradeWordSheet(part,+b.dataset.wgrade));
+  const allIdx=wl.map((_,i)=>i);
+  $("#rvall").onclick=()=>{delete save.sheets[part.id+":wR"];printWordSheet(part,4,makeWordSheet(part,4,allIdx,"R"));};
+  $("#rvweak").onclick=()=>{delete save.sheets[part.id+":wR"];printWordSheet(part,4,makeWordSheet(part,4,weak,"R"));};
+  $("#rvgrade").onclick=()=>gradeWordSheet(part,4,"R");
+  $("#rvvoice").onclick=()=>{beep("tap");wordVoice(part,4,allIdx,0,{ok:0,ng:0});};
   window.scrollTo(0,0);
 }
 function wordVoice(part,stage,queue,pos,tally){
@@ -919,7 +1472,8 @@ function wordVoice(part,stage,queue,pos,tally){
       <button class="btn ng" id="ngb">言えなかった</button><button class="btn ok" id="okb">言えた</button>`;
     $("#again").onclick=()=>speak(w.en);$("#okb").onclick=()=>finish(true);$("#ngb").onclick=()=>finish(false);
   };
-  if(stage<=2){
+  if(preview)afterVoice();
+  else if(stage<=2){
     let opened=false;
     $("#model").onclick=()=>{const b=$("#model");b.textContent="🔊 再生中…";
       speak(w.en,()=>{if(!document.body.contains(b))return;b.textContent="🔊 もう一度聞く";b.className="btn plain";
@@ -946,11 +1500,11 @@ function paginate(items,head){ /* items:[html] → ページごとの .sheet-p *
   items.forEach((h,i)=>{if(used+hs[i]>cap&&pages[pages.length-1].length){pages.push([]);used=0;}pages[pages.length-1].push(h);used+=hs[i];});
   return pages.map((pg,k)=>`<div class="sheet-p"><i class="mk tl"></i><i class="mk tr"></i><i class="mk bl"></i><i class="mk br"></i>${head(k+1,pages.length)}${pg.join("")}</div>`).join("");
 }
-function makeWordSheet(part,stage,idxs){
-  const key=part.id+":w"+stage,old=save.sheets[key];
+function makeWordSheet(part,stage,idxs,tag){   /* tag "R" は復習プリント */
+  const key=part.id+":w"+(tag||stage),old=save.sheets[key];
   if(old&&old.idxs.join()===idxs.join())return old;
   const rnd="ABCDEFGHJKLMNPRSTUVWXYZ";let c="";for(let i=0;i<3;i++)c+=rnd[Math.floor(Math.random()*rnd.length)];
-  const sh={code:part.id+"-W"+stage+"-"+c,idxs,t:Date.now()};
+  const sh={code:part.id+"-W"+(tag||stage)+"-"+c,idxs,t:Date.now(),rev:!!tag};
   save.sheets[key]=sh;persist();return sh;
 }
 function wordSheetHTML(part,stage,sh){
@@ -962,7 +1516,7 @@ function wordSheetHTML(part,stage,sh){
     return `<span class="sl" style="width:${Math.max(26,w.en.length*4.8+10)}mm"></span>`;
   };
   const items=sh.idxs.map((ix,n)=>`<div class="sh-item wd"><div class="sh-q"><span class="sh-no">${n+1}</span>${esc(wl[ix].ja)}</div><div class="sh-line">${line(wl[ix])}</div></div>`);
-  const head=(k,n)=>`<div class="sh-head"><div><b>本文 手書き</b>　Program ${progOf(part).id} ${part.name}　単語 ${stage}. ${WP[stage].name}</div><div class="sh-code">CODE ${sh.code}　${k}/${n}</div></div>
+  const head=(k,n)=>`<div class="sh-head"><div><b>本文 手書き</b>　Program ${progOf(part).id} ${part.name}　単語 ${sh.rev?"復習(日本語→英語)":stage+". "+WP[stage].name}</div><div class="sh-code">CODE ${sh.code}　${k}/${n}</div></div>
    <div class="sh-sub">${stage===1?"うすい字を、ていねいになぞる。声に出しながら。":stage===2?"ぬけている文字を、線の上に1文字ずつ書く。":stage===3?"頭文字のつづきを書いて、単語を完成させる。":"日本語を見て、英語を書く。"}こい鉛筆で、はっきりと。</div>`;
   return paginate(items,head);
 }
@@ -970,7 +1524,7 @@ function printWordSheet(part,stage,sh){
   if(!sh){wordScreen(part);return;}
   app.innerHTML=`
   <div class="top noprint"><button class="btn plain small" id="back">← もどる</button>
-   <h1 class="grow" style="font-size:20px">単語プリント　${stage}. ${WP[stage].name}</h1></div>
+   <h1 class="grow" style="font-size:20px">単語プリント　${sh.rev?"復習":stage+". "+WP[stage].name}</h1></div>
   <div class="row noprint"><button class="btn" id="doprint">🖨 印刷する</button>
    <span class="sub">${sh.idxs.length} 語・A4。印刷の画面が出ないときは、Safari でこのページを開いて印刷する。</span></div>
   <div class="preview">${wordSheetHTML(part,stage,sh)}</div>`;
@@ -978,8 +1532,9 @@ function printWordSheet(part,stage,sh){
   $("#doprint").onclick=()=>window.print();
   window.scrollTo(0,0);
 }
-function gradeWordSheet(part,stage){
-  const key=part.id+":w"+stage,sh=save.sheets[key];
+function gradeWordSheet(part,stage,tag){
+  const key=part.id+":w"+(tag||stage),sh=save.sheets[key];
+  const ttl=tag?"復習(日本語→英語)":stage+". "+WP[stage].name;
   if(!sh){wordScreen(part);return;}
   const aiOn=aiReady(),wl=WORDS[part.id];
   const st=sh.idxs.map(ix=>({ix,w:wl[ix],bad:false,aiText:null,override:false}));
@@ -989,7 +1544,7 @@ function gradeWordSheet(part,stage){
     const unread=st.filter(x=>x.aiText===null).length;
     app.innerHTML=`
     <div class="top"><button class="btn plain small" id="back">← もどる</button>
-     <div class="grow"><b>単語 ${stage}. ${WP[stage].name}</b>　<span class="sub">${part.name}　プリント ${sh.code}</span></div></div>
+     <div class="grow"><b>単語 ${ttl}</b>　<span class="sub">${part.name}　プリント ${sh.code}</span></div></div>
     ${aiOn?`<div class="panel" style="margin-bottom:8px">
       <p style="margin:0 0 6px"><b>プリントを1ページずつ撮る。</b><span class="sub">　四すみの ┏ ┓ ┗ ┛ が入るように、真上から明るい場所で。</span></p>
       <div class="row"><button class="btn" id="shot" ${busy?"disabled":""}>📷 ${shots?"もう1枚撮る":"撮る"}</button>
@@ -1032,13 +1587,74 @@ function gradeWordSheet(part,stage){
     if(save.log.length>600)save.log.splice(0,save.log.length-600);
     delete save.sheets[key];persist();beep(bads.length?"ng":"ok");
     app.innerHTML=`<div class="bcenter">${buddy("rb",bads.length?"":"cheer")}</div><div class="panel">
-      <h2>単語 ${stage}. ${WP[stage].name}　おわり</h2>
+      <h2>単語 ${ttl}　おわり</h2>
       <p style="font-size:22px;font-weight:800">${st.length} 語中　○ ${st.length-bads.length} ／ × ${bads.length}</p>
       ${bads.length?`<p class="sub">× の単語は 1つ前の段階にもどった。</p><p class="en" style="font-size:20px">${bads.map(x=>esc(x.w.en)).join("　")}</p>`:'<p class="sub">全部合っていた。つぎの段階へ進もう。</p>'}
       <button class="btn" id="go">つづける</button></div>`;
     $("#go").onclick=()=>wordScreen(part);window.scrollTo(0,0);
   }
   draw();window.scrollTo(0,0);
+}
+
+/* ================= 画面:書く段階の前のアプリ練習(聞く → 少しやる → 音読) ================= */
+function appStep(part,stage,queue,pos,tally){
+  try{speechSynthesis.cancel();}catch(e){}
+  if(pos>=queue.length){
+    app.innerHTML=`<div class="bcenter">${buddy("rb","cheer")}</div><div class="panel"><h2>${stage}. ${STAGES[stage].name}　アプリの練習 おわり</h2>
+      <p style="font-size:20px;font-weight:800">${queue.length} 文を、聞いて・ならべて・声に出して読んだ。</p>
+      <p class="sub">つぎは${save.mode==="print"?"プリントを印刷して、鉛筆で書こう。":save.mode==="paper"?"ノートに書こう。":"画面に書こう。"}</p>
+      <button class="btn" id="go">つづける</button></div>`;
+    $("#go").onclick=()=>partScreen(part);window.scrollTo(0,0);return;
+  }
+  const ix=queue[pos],item=part.items[ix],id=sid(part,ix),tk=tokens(item.en);
+  const blanks=blankSet(id,item.en,stage),order=tk.map((_,i)=>i).filter(i=>blanks.has(i));
+  const pool=shuffle(order.map(i=>({i,t:tk[i],used:false})));
+  const listenFirst=stage<=4;let listened=!listenFirst||preview,filled=0,miss=0,done=false;
+  app.innerHTML=`
+  <div class="top"><button class="btn plain small" id="quit">← やめる</button>
+   <div class="grow"><b>${stage}. ${STAGES[stage].name}</b>　<span class="sub">アプリで練習　${pos+1} / ${queue.length} 文</span>
+    <div class="bar"><i style="width:${pos/queue.length*100}%"></i></div></div></div>
+  <div class="panel" style="margin-bottom:8px">
+   <div class="sp">${esc(item.sp)}</div><div class="ja">${esc(item.ja)}</div>
+   <div class="rail" id="rail"></div>
+   <div class="pool" id="pool"></div>
+  </div>
+  <div class="buddyrow">${buddy("pb")}<p class="fb bubble" id="fb">${listenFirst?"まず 🔊 をおして、文を聞いてね":"まず自分で英文を言ってみよう。それからブロックをならべよう"}</p></div>
+  <div class="row" style="margin:8px 0"><button class="btn ${listenFirst?"":"plain small"}" id="say">${listenFirst?"🔊 まず聞く":"🔊 どうしても思い出せないときだけ聞く"}</button></div>
+  <div id="gate"></div>
+  <div class="row"><span class="grow"></span><button class="btn ok" id="next" disabled>つぎへ</button></div>`;
+  const draw=()=>{
+    let k=0;
+    $("#rail").innerHTML=tk.map((t,i)=>{
+      if(!blanks.has(i))return `<span class="tile" style="box-shadow:none;border-color:#B8C4D2">${esc(t)}</span>`;
+      const pos=k++;if(pos<filled)return `<span class="tile gold">${esc(t)}</span>`;
+      return `<span class="tile" style="box-shadow:none;border-style:dashed;color:var(--blue);min-width:${Math.max(2.2,t.length*.62)}em;text-align:left">${stage===4?esc(t.replace(/^"/,"")[0]):"&nbsp;"}</span>`;}).join("");
+    $("#pool").innerHTML=pool.map((p,n)=>`<button class="tile ${p.used?"used":""}" data-n="${n}" ${listened?"":"disabled"}>${esc(p.t)}</button>`).join("");
+    $("#pool").querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{
+      if(done||!listened)return;const p=pool[+b.dataset.n];if(p.used)return;
+      if(p.t===tk[order[filled]]){p.used=true;filled++;beep("tap");
+        if(filled>=order.length){finishFill();return;}
+        fb("いいね、その調子","ok");draw();}
+      else{miss++;beep("ng");b.classList.add("bad");fb(`${filled+1} つ目の空らんは、それじゃないよ。`,"ng","sad");}
+    });
+  };
+  function finishFill(){
+    done=true;draw();beep("ok");speak(item.en);
+    fb("できた! さいごに、文を全部声に出して読もう","ok","jump");
+    $("#say").textContent="🔊 もう一度聞く";$("#say").className="btn plain small";
+    micGate($("#gate"),item.en,()=>{$("#next").disabled=false;setBuddy("pb","jump");},{what:"文"});
+  }
+  $("#quit").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}partScreen(part);};
+  $("#say").onclick=()=>{const b=$("#say");const lab=b.textContent;b.textContent="🔊 再生中…";
+    speak(item.en,()=>{if(!document.body.contains(b))return;b.textContent=done||listened?"🔊 もう一度聞く":lab;
+      if(!listened){listened=true;b.textContent="🔊 もう一度聞く";b.className="btn plain small";
+        fb(stage===1?"聞こえた順に、ブロックをならべよう":stage===4?"頭文字をヒントに、ブロックを入れよう":"空らんに入るブロックを、順に入れよう");draw();}});};
+  $("#next").onclick=()=>{
+    try{speechSynthesis.cancel();}catch(e){}
+    save.app[id]=Math.max(save.app[id]||0,stage);save.log.push({t:Date.now(),kind:"app",id,stage,ok:miss===0});persist();
+    tally.miss+=miss;beep("tap");appStep(part,stage,queue,pos+1,tally);
+  };
+  draw();if(preview)$("#next").disabled=false;window.scrollTo(0,0);
 }
 
 /* ================= 画面:英→日 ================= */
@@ -1074,6 +1690,7 @@ function ejItem(part,S){
     speak(it.en,()=>{if(!document.body.contains(b))return;b.textContent="🔊 もう一度聞く";b.className="btn plain";
       if(!solved){app.querySelectorAll(".opt").forEach(o=>o.disabled=false);fb("どの意味かな?");}});};
   let solved=false;
+  if(preview){app.querySelectorAll(".opt").forEach(o=>o.disabled=false);addSkip(()=>{S.pos++;ejItem(part,S);});}
   app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
     if(solved)return;solved=true;const ok=opts[+b.dataset.i].ja===it.ja;
     app.querySelectorAll(".opt").forEach((o,j)=>{if(opts[j].ja===it.ja)o.classList.add("good");o.disabled=true;});
@@ -1126,6 +1743,7 @@ function readItem(part,queue,pos){
     stop();save.read[id]=true;save.log.push({t:Date.now(),id,stage:0,ok:true,words:[]});persist();beep("tap");
     readItem(part,queue,pos+1);
   };
+  if(preview)$("#nextbtn").disabled=false;
   window.scrollTo(0,0);
 }
 
@@ -1174,7 +1792,7 @@ function question(){
   function redrawBg(){drawBg(bctx,lay,stage,blanks,revealed,wrong);}
   function redrawInk(){ictx.clearRect(0,0,W,H);drawStrokes(ictx,strokes);}
   function redraw(){redrawBg();redrawInk();}
-  function refreshBtn(){ if(!revealed) $("#checkbtn").disabled=strokes.length===0; }
+  function refreshBtn(){ if(!revealed) $("#checkbtn").disabled=strokes.length===0&&!preview; }
   const pt=e=>{const r=ink.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*W/r.width];};
   const widthOf=e=>e.pointerType==="pen"?2.6+(e.pressure||.4)*4.2:4.2;
   const accept=e=>e.pointerType==="pen"||e.pointerType==="mouse"||save.finger;
@@ -1610,7 +2228,7 @@ function parent(){
   app.innerHTML=`
   <div class="top"><button class="btn plain small" id="back">← もどる</button><h1 class="grow">保護者モード</h1></div>
   <div class="panel"><h2>中身の確認</h2>
-   <p class="sub">たっくんの記録を変えずに、単語・しくみ・音読・英→日・書く段階・プリントの中身を全部見られます。確認中に進めた分は、終わると消えます。</p>
+   <p class="sub">たっくんの記録を変えずに、単語・しくみ・音読・英→日・書く段階・プリントの中身を全部見られます。確認中は、音読や問題を解かなくても先へ進めます。進めた分は、終わると消えます。</p>
    <button class="btn" id="pvstart">記録しないで中身を見る</button></div>
   <div class="panel"><h2>設定</h2>
    ${sw("micRequired","マイク必須","オンにすると、声が聞こえるまで先へ進めない(「マイクを使わずに進む」が出なくなる)。発音の正誤は判定しません。")}
@@ -1629,7 +2247,7 @@ function parent(){
    <input class="txt" id="ailinkbox" readonly style="display:none">
   </div>
   <div class="panel"><h2>日ごとの取り組み</h2>
-   ${dkeys.length?`<table><tr><th>日付</th><th>単語・しくみ・英→日</th><th>音読</th><th>書いた文</th><th>○</th><th>×</th><th>何も見ないで書けた</th></tr>
+   ${dkeys.length?`<table><tr><th>日付</th><th>単語・しくみ・英→日・アプリ練習</th><th>音読</th><th>書いた文</th><th>○</th><th>×</th><th>何も見ないで書けた</th></tr>
     ${dkeys.map(k=>{const d=days[k];return `<tr><td>${k}</td><td>${d.other||0}</td><td>${d.read}</td><td>${d.ok+d.ng}</td><td>${d.ok}</td><td>${d.ng}</td><td>${d.top}</td></tr>`;}).join("")}</table>`
     :'<p class="sub">まだ記録がありません。</p>'}
   </div>
@@ -1679,7 +2297,7 @@ function parent(){
   let armed=false;
   $("#reset").onclick=()=>{
     if(!armed){armed=true;$("#resetmsg").textContent="本当に消すなら、もう一度おす。";return;}
-    save={lv:{},miss:{},ink:{},read:{},lessons:{},ej:{},wv:{},wp:{},wbad:{},log:[],finger:save.finger,micRequired:save.micRequired,sound:save.sound,mode:save.mode,aiUrl:save.aiUrl,aiPass:save.aiPass,sheets:{},shots:[]};persist();parent();
+    save={lv:{},miss:{},ink:{},read:{},lessons:{},ej:{},wv:{},wp:{},wbad:{},app:{},log:[],finger:save.finger,micRequired:save.micRequired,sound:save.sound,mode:save.mode,aiUrl:save.aiUrl,aiPass:save.aiPass,sheets:{},shots:[]};persist();parent();
   };
   window.scrollTo(0,0);
 }
