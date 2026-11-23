@@ -198,10 +198,15 @@ img.thumb{height:auto}
 .bcenter .buddy{width:88px;height:88px}
 @media (prefers-reduced-motion: reduce){.buddy svg{animation:none!important}}
 @media print{.buddy{display:none!important}}
+#pvbar{position:sticky;top:0;z-index:50;background:#1D2B45;color:#fff;font-weight:800;font-size:14px;padding:8px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+#pvbar[hidden]{display:none}
+#pvbar button{background:var(--gold);border:2px solid #fff;border-radius:10px;font:inherit;font-weight:800;padding:4px 10px;white-space:nowrap}
+@media print{#pvbar{display:none!important}}
 .pm button{width:34px;height:34px;border-radius:9px;border:2px solid var(--edge);background:#fff;font-weight:800;font-size:18px;line-height:1}
 </style>
 </head>
 <body>
+<div id="pvbar" hidden><span>👀 中身の確認中：記録されません。全部の段階を開けます。</span><button id="pvend">確認をおわる</button></div>
 <main id="app"></main>
 <script>
 /* ================= データ(本文JUMPと同じ文) ================= */
@@ -373,7 +378,15 @@ const MAXST=5;
 const KEY="honbun-tegaki-p6-v1";
 let save={lv:{},miss:{},ink:{},read:{},lessons:{},ej:{},wv:{},wp:{},wbad:{},log:[],finger:false,micRequired:false,sound:true,mode:"print",aiUrl:"",aiPass:"",sheets:{},shots:[]};
 try{const r=localStorage.getItem(KEY); if(r) save=Object.assign(save,JSON.parse(r));}catch(e){}
+/* 保護者の「中身の確認」：記録せずに全部の段階を開ける。終わると元の記録にもどす */
+let preview=false,realSave=null;
+function startPreview(){realSave=JSON.stringify(save);preview=true;document.getElementById("pvbar").hidden=false;home();}
+function endPreview(){
+  try{speechSynthesis.cancel();}catch(e){}
+  if(realSave)save=JSON.parse(realSave);realSave=null;preview=false;document.getElementById("pvbar").hidden=true;parent();
+}
 function persist(){
+  if(preview)return;
   try{localStorage.setItem(KEY,JSON.stringify(save));}
   catch(e){ try{save.ink={};save.shots=[];localStorage.setItem(KEY,JSON.stringify(save));}catch(e2){} }
 }
@@ -683,7 +696,7 @@ function partScreen(part){
     <button class="btn ${ejDone?"plain":""}" id="ejgo">${ejDone?"もう一度":"はじめる"}</button>
   </div>
   ${[1,2,3,4,5].map(s=>{
-    const c=counts[s],passed=part.items.filter((_,i)=>lvOf(sid(part,i))>s).length;
+    const c=preview?n:counts[s],passed=part.items.filter((_,i)=>lvOf(sid(part,i))>s).length;
     const done=passed===n;
     return `<div class="stage ${s===now?"now":""} ${done?"done":""}">
       <div class="num">${done?"✓":s}</div>
@@ -704,12 +717,12 @@ function partScreen(part){
   $("#readgo").onclick=()=>startRead(part,unread.length?unread:part.items.map((_,i)=>i));
   app.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{
     const st=+b.dataset.st;
-    startRun(part,st,part.items.map((_,i)=>i).filter(i=>lvOf(sid(part,i))===st));
+    startRun(part,st,part.items.map((_,i)=>i).filter(i=>preview||lvOf(sid(part,i))===st));
   });
   if($("#review")) $("#review").onclick=()=>{const all=part.items.map((_,i)=>i);
     save.mode==="print"?printSheet(part,5,makeSheet(part,5,all)):startRun(part,5,all);};
   app.querySelectorAll("[data-print]").forEach(b=>b.onclick=()=>{
-    const st=+b.dataset.print,q=part.items.map((_,i)=>i).filter(i=>lvOf(sid(part,i))===st);
+    const st=+b.dataset.print,q=part.items.map((_,i)=>i).filter(i=>preview||lvOf(sid(part,i))===st);
     const old=save.sheets[part.id+":"+st];
     printSheet(part,st,q.length?makeSheet(part,st,q):old);});
   app.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>gradeSheet(part,+b.dataset.grade));
@@ -832,7 +845,7 @@ function wordExample(part,w){
 }
 function wordScreen(part){
   const wl=WORDS[part.id],n=wl.length;
-  const cnt=(of,s)=>wl.filter((_,i)=>of(wid(part,i))===s).length, past=(of,s)=>wl.filter((_,i)=>of(wid(part,i))>s).length;
+  const cnt=(of,s)=>preview?wl.length:wl.filter((_,i)=>of(wid(part,i))===s).length, past=(of,s)=>wl.filter((_,i)=>of(wid(part,i))>s).length;
   let nowV=0;for(let s=1;s<=4;s++){if(cnt(wvOf,s)){nowV=s;break;}}
   let nowP=0;for(let s=1;s<=4;s++){if(cnt(wpOf,s)){nowP=s;break;}}
   app.innerHTML=`
@@ -856,8 +869,8 @@ function wordScreen(part){
               :`<button class="btn small" data-wgrade="${s}" ${has?"":"disabled"}>${aiReady()?"📷 撮って採点":"答え合わせ"}</button>`}</div>`:""}</div></div>`;}).join("")}`;
   $("#back").onclick=()=>partScreen(part);
   app.querySelectorAll("[data-wv]").forEach(b=>b.onclick=()=>{const st=+b.dataset.wv;beep("tap");
-    wordVoice(part,st,wl.map((_,i)=>i).filter(i=>wvOf(wid(part,i))===st),0,{ok:0,ng:0});});
-  app.querySelectorAll("[data-wprint]").forEach(b=>b.onclick=()=>{const st=+b.dataset.wprint,q=wl.map((_,i)=>i).filter(i=>wpOf(wid(part,i))===st);
+    wordVoice(part,st,wl.map((_,i)=>i).filter(i=>preview||wvOf(wid(part,i))===st),0,{ok:0,ng:0});});
+  app.querySelectorAll("[data-wprint]").forEach(b=>b.onclick=()=>{const st=+b.dataset.wprint,q=wl.map((_,i)=>i).filter(i=>preview||wpOf(wid(part,i))===st);
     printWordSheet(part,st,q.length?makeWordSheet(part,st,q):save.sheets[part.id+":w"+st]);});
   app.querySelectorAll("[data-traced]").forEach(b=>b.onclick=()=>{
     wl.forEach((_,i)=>{const id=wid(part,i);if(wpOf(id)===1)save.wp[id]=2;});
@@ -1596,6 +1609,9 @@ function parent(){
      <button class="btn small ${save[k]?"":"plain"}" data-sw="${k}">${save[k]?"オン":"オフ"}</button></div>`;
   app.innerHTML=`
   <div class="top"><button class="btn plain small" id="back">← もどる</button><h1 class="grow">保護者モード</h1></div>
+  <div class="panel"><h2>中身の確認</h2>
+   <p class="sub">たっくんの記録を変えずに、単語・しくみ・音読・英→日・書く段階・プリントの中身を全部見られます。確認中に進めた分は、終わると消えます。</p>
+   <button class="btn" id="pvstart">記録しないで中身を見る</button></div>
   <div class="panel"><h2>設定</h2>
    ${sw("micRequired","マイク必須","オンにすると、声が聞こえるまで先へ進めない(「マイクを使わずに進む」が出なくなる)。発音の正誤は判定しません。")}
    <div class="set"><div class="grow"><b>書き方</b><div class="sub">「プリントに書く」は印刷したプリントに鉛筆で書き、1ページずつ撮って採点。「ノートに書く」は1文ずつノートに書く。「画面に書く」は iPad＋Apple Pencil 用。</div></div>
@@ -1641,6 +1657,7 @@ function parent(){
    </table></div>`).join("")}
   <div class="row"><button class="btn plain small" id="reset">きろくをぜんぶ消す</button><span class="sub" id="resetmsg"></span></div>`;
   $("#back").onclick=home;
+  $("#pvstart").onclick=startPreview;
   $("#modebtn").onclick=()=>{const y=window.scrollY;save.mode={print:"paper",paper:"screen",screen:"print"}[save.mode]||"print";persist();parent();window.scrollTo(0,y);};
   $("#aisave").onclick=()=>{save.aiUrl=$("#aiurl").value.trim();save.aiPass=$("#aipass").value.trim();persist();if(!save.aiUrl)save.aiUrl=DEFAULT_AI_URL;const y=window.scrollY;parent();window.scrollTo(0,y);$("#aimsg").textContent=aiReady()?"保存しました。":"合言葉が空なので、自己採点だけで動きます。";};
   $("#ailink").onclick=async()=>{
@@ -1667,6 +1684,7 @@ function parent(){
   window.scrollTo(0,0);
 }
 
+document.getElementById("pvend").onclick=endPreview;
 document.addEventListener("gesturestart",e=>e.preventDefault());
 home();
 </script>
