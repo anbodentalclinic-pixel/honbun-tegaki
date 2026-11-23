@@ -198,6 +198,25 @@ function persist(){
   try{localStorage.setItem(KEY,JSON.stringify(save));}
   catch(e){ try{save.ink={};save.shots=[];localStorage.setItem(KEY,JSON.stringify(save));}catch(e2){} }
 }
+/* AI採点の送り先(URLは秘密ではない。合言葉はここに書かない) */
+const DEFAULT_AI_URL="https://honbun-tegaki-ai.anbodentalclinic.workers.dev";
+if(!save.aiUrl)save.aiUrl=DEFAULT_AI_URL;
+const aiReady=()=>!!(save.aiUrl&&save.aiPass);
+/* 設定リンク(…/#pass=合言葉)で開いたら、合言葉を保存してアドレスから消す */
+let setupMsg="";
+(function(){
+  try{
+    if(!location.hash||location.hash.length<2)return;
+    const q=new URLSearchParams(location.hash.slice(1));
+    const pass=q.get("pass"),ai=q.get("ai");
+    if(pass||ai){
+      if(ai&&/^https:\/\//.test(ai))save.aiUrl=ai;
+      if(pass)save.aiPass=pass;
+      persist();setupMsg="AI採点の設定をこの端末に保存しました。";
+      history.replaceState(null,"",location.pathname+location.search);
+    }
+  }catch(e){}
+})();
 const sid=(part,i)=>part.id+":"+i;
 const lvOf=id=>save.lv[id]||1;
 
@@ -388,6 +407,7 @@ function partStat(part){
 }
 function home(){
   app.innerHTML=`
+  ${setupMsg?`<div class="check" style="border:2px solid var(--ok)"><b style="color:var(--ok)">${setupMsg}</b></div>`:""}
   <h1>本文 手書き</h1>
   <p class="sub">Program ${PROGRAM.id} ${esc(PROGRAM.title)} ／ 音読してから、日本語を見て英文を${{print:"プリントに",paper:"ノートに",screen:"画面に"}[save.mode]}書く</p>
   ${PROGRAM.parts.map((p,pi)=>{const s=partStat(p);return `
@@ -425,7 +445,7 @@ function partScreen(part){
   <div class="top"><button class="btn plain small" id="back">← もどる</button>
    <h1 class="grow">${part.name} <span class="sub">${part.pages}</span></h1></div>
   <p class="sub">上から順に進む。まちがえた文は 1つ前の段階にもどるだけ(最初からにはならない)。</p>
-  ${save.mode==="print"?`<div class="steps">書く段階の進め方：① 🖨 プリントを作って印刷 → ② 鉛筆で書く → ③ ${save.aiUrl?"📷 撮って採点":"答え合わせ"}</div>`:""}
+  ${save.mode==="print"?`<div class="steps">書く段階の進め方：① 🖨 プリントを作って印刷 → ② 鉛筆で書く → ③ ${aiReady()?"📷 撮って採点":"答え合わせ"}</div>`:""}
   <div class="stage ${now===0?"now":""} ${unread.length?"":"done"}">
     <div class="num">${unread.length?"♪":"✓"}</div>
     <div class="grow"><div class="name">本文音読${now===0?'<span class="tag">つぎはここ</span>':""}</div>
@@ -443,7 +463,7 @@ function partScreen(part){
        <div class="sub">この段階をこえた文 ${passed} / ${n}${save.mode==="print"&&c?`　<b>あと ${c} 文</b>`:""}</div>
        ${save.mode==="print"&&(c||save.sheets[part.id+":"+s])?`<div class="row" style="margin-top:6px">
          <button class="btn small plain" data-print="${s}">🖨 プリントを作る</button>
-         <button class="btn small" data-grade="${s}" ${save.sheets[part.id+":"+s]?"":"disabled"}>${save.aiUrl?"📷 撮って採点":"答え合わせ"}</button></div>`:""}</div>
+         <button class="btn small" data-grade="${s}" ${save.sheets[part.id+":"+s]?"":"disabled"}>${aiReady()?"📷 撮って採点":"答え合わせ"}</button></div>`:""}</div>
       ${save.mode!=="print"&&c?`<button class="btn" data-st="${s}">あと ${c} 文</button>`:""}
      </div>`;}).join("")}
   ${clear===n?`<div class="panel"><h2>ぜんぶ書けた!</h2>
@@ -728,7 +748,7 @@ function paperQuestion(){
   const idx=queue[pos],item=part.items[idx],id=sid(part,idx);
   const tk=tokens(item.en),blanks=blankSet(id,item.en,stage);
   let wrong=new Set(),extraOn=new Set(),extra=[],notes={},readDone=false,photo=null,aiText=null,override=false;
-  const aiOn=!!save.aiUrl;
+  const aiOn=aiReady();
   app.innerHTML=`
   <div class="top"><button class="btn plain small" id="quit">← やめる</button>
    <div class="grow"><b>${stage}. ${STAGES[stage].name}</b>　<span class="sub">${part.name}　${pos+1} / ${queue.length} 文</span>
@@ -884,7 +904,7 @@ function parseSheetText(text){
 function gradeSheet(part,stage){
   const key=part.id+":"+stage,sh=save.sheets[key];
   if(!sh){partScreen(part);return;}
-  const aiOn=!!save.aiUrl;
+  const aiOn=aiReady();
   const st=sh.idxs.map(ix=>({ix,tk:tokens(part.items[ix].en),wrong:new Set(),extra:[],extraOn:new Set(),notes:{},aiText:null,override:false}));
   let shots=0,warn="",busy=false,msg="";
   function draw(){
@@ -995,10 +1015,13 @@ function parent(){
    ${sw("sound","効果音","正解・まちがいの音。")}
   </div>
   <div class="panel"><h2>AI採点(ノートの写真)</h2>
-   <p class="sub">設定すると、プリントやノートを撮って採点できます。空のままなら自己採点だけで動きます。現在：<b>${save.aiUrl?"設定済み":"未設定"}</b></p>
-   <input class="txt" id="aiurl" placeholder="Cloudflare Worker のURL (https://….workers.dev)" value="${esc(save.aiUrl)}" autocapitalize="off" autocorrect="off">
+   <p class="sub">合言葉を入れると、プリントやノートを撮って採点できます。空のままなら自己採点だけで動きます。現在：<b>${aiReady()?"設定済み":"未設定(合言葉なし)"}</b></p>
    <input class="txt" id="aipass" placeholder="合言葉" value="${esc(save.aiPass)}" autocapitalize="off" autocorrect="off">
-   <div class="row"><button class="btn small" id="aisave">保存</button><span class="sub" id="aimsg"></span></div>
+   <details style="margin:4px 0"><summary class="sub">送り先のURLを変える</summary>
+    <input class="txt" id="aiurl" placeholder="Cloudflare Worker のURL (https://….workers.dev)" value="${esc(save.aiUrl)}" autocapitalize="off" autocorrect="off"></details>
+   <div class="row"><button class="btn small" id="aisave">保存</button>
+    <button class="btn small plain" id="ailink" ${aiReady()?"":"disabled"}>ほかの端末に送る設定リンク</button><span class="sub" id="aimsg"></span></div>
+   <input class="txt" id="ailinkbox" readonly style="display:none">
   </div>
   <div class="panel"><h2>日ごとの取り組み</h2>
    ${dkeys.length?`<table><tr><th>日付</th><th>音読</th><th>書いた文</th><th>○</th><th>×</th><th>何も見ないで書けた</th></tr>
@@ -1021,7 +1044,13 @@ function parent(){
   <div class="row"><button class="btn plain small" id="reset">きろくをぜんぶ消す</button><span class="sub" id="resetmsg"></span></div>`;
   $("#back").onclick=home;
   $("#modebtn").onclick=()=>{const y=window.scrollY;save.mode={print:"paper",paper:"screen",screen:"print"}[save.mode]||"print";persist();parent();window.scrollTo(0,y);};
-  $("#aisave").onclick=()=>{save.aiUrl=$("#aiurl").value.trim();save.aiPass=$("#aipass").value.trim();persist();$("#aimsg").textContent=save.aiUrl?"保存しました。":"未設定に戻しました。";};
+  $("#aisave").onclick=()=>{save.aiUrl=$("#aiurl").value.trim();save.aiPass=$("#aipass").value.trim();persist();if(!save.aiUrl)save.aiUrl=DEFAULT_AI_URL;const y=window.scrollY;parent();window.scrollTo(0,y);$("#aimsg").textContent=aiReady()?"保存しました。":"合言葉が空なので、自己採点だけで動きます。";};
+  $("#ailink").onclick=async()=>{
+    const url=location.origin+location.pathname+"#pass="+encodeURIComponent(save.aiPass)+(save.aiUrl!==DEFAULT_AI_URL?"&ai="+encodeURIComponent(save.aiUrl):"");
+    const box=$("#ailinkbox");box.style.display="";box.value=url;
+    try{ if(navigator.share){await navigator.share({title:"本文 手書き 設定リンク",url});return;} }catch(e){}
+    try{await navigator.clipboard.writeText(url);$("#aimsg").textContent="リンクをコピーしました。";}catch(e){$("#aimsg").textContent="下のリンクをコピーして送ってください。";}
+  };
   app.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>{const y=window.scrollY;save[b.dataset.sw]=!save[b.dataset.sw];persist();parent();window.scrollTo(0,y);});
   app.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{
     const id=b.dataset.lv,y=window.scrollY;
