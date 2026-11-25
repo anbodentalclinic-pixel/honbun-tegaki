@@ -518,6 +518,7 @@ function persist(){
   if(preview)return;
   try{localStorage.setItem(KEY,JSON.stringify(save));}
   catch(e){ try{save.ink={};save.shots=[];localStorage.setItem(KEY,JSON.stringify(save));}catch(e2){} }
+  syncSoon();
 }
 /* AI採点の送り先(URLは秘密ではない。合言葉はここに書かない) */
 const DEFAULT_AI_URL="https://honbun-tegaki-ai.anbodentalclinic.workers.dev";
@@ -2308,6 +2309,72 @@ function result(){
   window.scrollTo(0,0);
 }
 
+/* ================= 記録をスプレッドシート(拓真 英語まちがい記録)へ送る =================
+   save.log の1行ごとに「送った」しるし(s:1)をつける。届いたと確認できた分だけしるしをつけるので、
+   電波がないときの分や、この仕組みが入る前の分は、次に開いたときにまとめて送られる。 */
+const SYNC={url:"https://script.google.com/macros/s/AKfycbz-3seMZTiFcJRscHxa_l1DoeDtET405w5_YxsgjsRPx1coF2oPQlFWbZgOgpXz88vZsA/exec",key:"dxyqERe2VfS4JL_4",app:"本文 手書き"};
+const SYNC_ST={1:"語群",2:"虫食い少",3:"虫食い多",4:"頭文字",5:"何も見ない"};
+const SYNC_WV={1:"紹介",2:"まねる",3:"頭文字",4:"ノーヒント"}, SYNC_WP={1:"なぞる",2:"文字の補充",3:"頭文字だけ",4:"日本語→英語"};
+function syncPart(pid){let r=null;PROGRAMS.forEach(p=>p.parts.forEach(q=>{if(q.id===pid)r={p,q};}));return r;}
+function syncRec(l){
+  try{
+    const id=String(l.id||""),pid=id.split(":")[0],tail=id.indexOf(":")>=0?id.slice(id.indexOf(":")+1):"";
+    const pq=syncPart(pid),prog="P"+(parseInt(id,10)||"");
+    const base={time:new Date(l.t).toISOString(),app:SYNC.app,result:l.ok===false?"×":"○",program:prog};
+    const partName=pq?("Program "+pq.p.id+" "+pq.q.name):id;
+    if(l.kind==="lesson"){
+      let L=null;Object.keys(LESSONS).forEach(k=>LESSONS[k].forEach(x=>{if(x.id===l.id)L=x;}));
+      return Object.assign(base,{kind:"しくみ",item:L?L.name:id});
+    }
+    if(l.kind==="ej")return Object.assign(base,{kind:"英→日",item:partName});
+    if(l.kind==="word"||l.kind==="wprint"){
+      const voice=l.kind==="word",kind=voice?"単語（声）":"単語（プリント）",names=voice?SYNC_WV:SYNC_WP;
+      const st="段階"+l.stage+"（"+(names[l.stage]||"")+"）";
+      if(tail.charAt(0)!=="w")return Object.assign(base,{kind,item:partName+" "+(names[l.stage]||""),input:st});
+      const w=(WORDS[pid]||[])[parseInt(tail.slice(1),10)];
+      if(!w)return null;
+      return Object.assign(base,{kind,item:w.en,correct:w.en,input:st+(l.wrote?"：AIの読み「"+l.wrote+"」":"")+(l.override?"・自分で直した":"")});
+    }
+    const it=pq?pq.q.items[parseInt(tail,10)]:null;
+    if(!it)return null;
+    if(l.kind==="app")return Object.assign(base,{kind:"アプリ練習",item:it.en,correct:it.en,input:"段階"+l.stage+"（"+(SYNC_ST[l.stage]||"")+"）"});
+    if(!l.stage)return Object.assign(base,{kind:"音読",item:it.en});
+    return Object.assign(base,{kind:"書く",item:it.en,correct:it.en,
+      input:"段階"+l.stage+"（"+(SYNC_ST[l.stage]||"")+"）"+((l.words&&l.words.length)?"：まちがえた単語 "+l.words.join("、"):"")+(l.ai?"・AI採点":"・自分で答え合わせ")+(l.override?"・自分で直した":"")});
+  }catch(e){return null;}
+}
+const syncKey=l=>l.t+"|"+l.id+"|"+(l.kind||"")+"|"+(l.stage||0);
+const syncPending=()=>(save.log||[]).filter(l=>!l.s).length;
+let syncBusy=false,syncTimer=0,syncDone=null;
+function syncSoon(){clearTimeout(syncTimer);syncTimer=setTimeout(syncFlush,3000);}
+function syncMark(keys,err){
+  /* 中身の確認(プレビュー)中は、元の記録のほうにしるしをつけて保存する */
+  const apply=o=>{(o.log||[]).forEach(l=>{if(keys.has(syncKey(l)))l.s=1;});if(keys.size){o.syncAt=Date.now();}o.syncErr=err||"";};
+  if(preview&&realSave){
+    try{const o=JSON.parse(realSave);apply(o);realSave=JSON.stringify(o);localStorage.setItem(KEY,realSave);}catch(e){}
+  }else{
+    apply(save);try{localStorage.setItem(KEY,JSON.stringify(save));}catch(e){}
+  }
+}
+function syncFlush(){
+  clearTimeout(syncTimer);
+  if(preview||syncBusy)return;
+  const pend=(save.log||[]).filter(l=>!l.s).slice(0,100);
+  if(!pend.length){if(syncDone)syncDone();return;}
+  if(navigator.onLine===false){save.syncErr="電波がありません";if(syncDone)syncDone();return;}
+  const keys=new Set(pend.map(syncKey)),records=pend.map(syncRec).filter(Boolean);
+  if(!records.length){syncMark(keys,"");syncFlush();return;}
+  syncBusy=true;
+  fetch(SYNC.url,{method:"POST",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({key:SYNC.key,records})})
+   .then(r=>r.json())
+   .then(j=>{if(!j||!j.ok)throw new Error("受け口の返事："+(j&&j.error||"不明"));syncMark(keys,"");return true;})
+   .catch(e=>{syncMark(new Set(),String(e&&e.message||e));return false;})
+   .then(ok=>{syncBusy=false;if(ok&&!preview&&syncPending())setTimeout(syncFlush,800);else if(syncDone)syncDone();});
+}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")syncFlush();});
+window.addEventListener("online",syncFlush);
+setTimeout(syncFlush,1500);
+
 /* ================= 画面:保護者モード ================= */
 function dayKey(t){const d=new Date(t);return d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();}
 function parent(){
@@ -2342,6 +2409,7 @@ function parent(){
    ${dkeys.length?`<table><tr><th>日付</th><th>単語・しくみ・英→日・アプリ練習</th><th>音読</th><th>書いた文</th><th>○</th><th>×</th><th>何も見ないで書けた</th></tr>
     ${dkeys.map(k=>{const d=days[k];return `<tr><td>${k}</td><td>${d.other||0}</td><td>${d.read}</td><td>${d.ok+d.ng}</td><td>${d.ok}</td><td>${d.ng}</td><td>${d.top}</td></tr>`;}).join("")}</table>`
     :'<p class="sub">まだ記録がありません。</p>'}
+   <div class="row" style="margin-top:10px"><span class="sub grow" id="syncmsg"></span><button class="btn small plain" id="syncnow">今すぐ送る</button></div>
   </div>
   ${save.shots.length?`<div class="panel"><h2>最近撮ったプリント</h2><div class="row" style="align-items:flex-start">
     ${save.shots.slice().reverse().map(x=>`<div><img class="thumb" style="width:150px" src="${x.thumb}" alt=""><div class="sub">${esc(x.code)}・${new Date(x.t).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</div></div>`).join("")}</div></div>`:""}
@@ -2368,6 +2436,13 @@ function parent(){
   <div class="row"><button class="btn plain small" id="reset">きろくをぜんぶ消す</button><span class="sub" id="resetmsg"></span></div>`;
   $("#back").onclick=home;
   $("#pvstart").onclick=startPreview;
+  const syncShow=()=>{const m=$("#syncmsg");if(!m)return;const n=syncPending();
+    const at=save.syncAt?new Date(save.syncAt):null;
+    m.textContent="スプレッドシート(拓真 英語まちがい記録)への送信："+(n?"まだ送っていない記録 "+n+" 件":"全部送りました")
+      +(at?"／最後に送った時刻 "+(at.getMonth()+1)+"/"+at.getDate()+" "+at.getHours()+":"+String(at.getMinutes()).padStart(2,"0"):"")
+      +(n&&save.syncErr?"／送れなかった理由："+save.syncErr:"");};
+  syncShow();
+  $("#syncnow").onclick=()=>{$("#syncmsg").textContent="送っています…";syncDone=()=>{syncDone=null;syncShow();};syncFlush();if(syncBusy===false&&syncDone){syncDone();}};
   $("#modebtn").onclick=()=>{const y=window.scrollY;save.mode={print:"paper",paper:"screen",screen:"print"}[save.mode]||"print";persist();parent();window.scrollTo(0,y);};
   $("#aisave").onclick=()=>{save.aiUrl=$("#aiurl").value.trim();save.aiPass=$("#aipass").value.trim();persist();if(!save.aiUrl)save.aiUrl=DEFAULT_AI_URL;const y=window.scrollY;parent();window.scrollTo(0,y);$("#aimsg").textContent=aiReady()?"保存しました。":"合言葉が空なので、自己採点だけで動きます。";};
   $("#ailink").onclick=async()=>{
